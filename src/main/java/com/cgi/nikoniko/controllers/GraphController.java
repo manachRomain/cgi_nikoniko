@@ -15,8 +15,6 @@ import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -267,6 +265,9 @@ public class GraphController extends ViewBaseController<User>{
 
 		Long idUser = UtilsFunctions.getUserInformations(userCrud).getId();
 		User user = super.getItem(idUser);
+		
+		LocalDate currentDate = new LocalDate(year, month, day);
+		
 		Set<NikoNiko> niko =  user.getNikoNikos();
 		List<NikoNiko> listOfNiko = new ArrayList<NikoNiko>(niko);
 		List<NikoNiko> nikotoday = getNikoPreciseDate(listOfNiko, year, month, day);
@@ -290,9 +291,22 @@ public class GraphController extends ViewBaseController<User>{
 				bad++;
 			}
 		}
-
+		try {
+			model.addAttribute("textAreaOption", nikoCrud.getNikoByDate(currentDate, idUser).getComment());
+		} catch (Exception e) {
+			model.addAttribute("textAreaOption", "");
+		}
+		
+		try {
+			model.addAttribute("motiv", nikoCrud.getNikoByDate(currentDate, idUser).getMood());
+		} catch (Exception e) {
+			model.addAttribute("motiv", 0);
+		}
+	
+		
+		model.addAttribute("check", true );
 		model.addAttribute("idVert",user.getVerticale().getId());
-		model.addAttribute("title", "Mes votes de la journÃ©e du : " + day + " " + getMonthLetter(month) + " " + year );
+		model.addAttribute("title", "Mon vote de la journée du : " + day + " " + getMonthLetter(month) + " " + year );
 		model.addAttribute("role", role);
 		model.addAttribute("mood", UtilsFunctions.getUserLastMood(userCrud.findByLogin(super.checkSession().getName()).getId(), userCrud, nikoCrud));
 		model.addAttribute("good", good);
@@ -302,6 +316,7 @@ public class GraphController extends ViewBaseController<User>{
 		model.addAttribute("month", month);
 		model.addAttribute("day", day);
 		model.addAttribute("back", PathFinder.PATH + PathFinder.MENU_PATH);
+		
 		return "graphs" + PathFinder.PATH + "piedate";
 	}
 
@@ -475,6 +490,8 @@ public class GraphController extends ViewBaseController<User>{
 	@RequestMapping(path = PathFinder.SHOW_GRAPH_VERTICALE + PathFinder.PATH + "{year}" + PathFinder.PATH + "{month}" + PathFinder.PATH + "{day}", method = RequestMethod.GET)
 	public String getNikoFromVerticaleWithDate(Model model, @PathVariable int year,
 			@PathVariable int month, @PathVariable int day){
+		
+		LocalDate currentDate = new LocalDate(year,month,day);
 
 		Long userId = UtilsFunctions.getUserInformations(userCrud).getId();
 		int nbMood = 0;
@@ -506,7 +523,20 @@ public class GraphController extends ViewBaseController<User>{
 				}
 			}
 		}
+		
+		try {
+			model.addAttribute("textAreaOption", nikoCrud.getNikoByDate(currentDate, userId).getComment());
+		} catch (Exception e) {
+			model.addAttribute("textAreaOption", "");
+		}
+		
+		try {
+			model.addAttribute("motiv", nikoCrud.getNikoByDate(currentDate, userId).getMood());
+		} catch (Exception e) {
+			model.addAttribute("motiv", 0);
+		}
 
+		model.addAttribute("check", false);
 		model.addAttribute("idVert",user.getVerticale().getId());
 		model.addAttribute("title", "Tous les votes du : " + day + " " + getMonthLetter(month) + " " + year + ", pour la verticale : " + verticaleCrud.findOne(verticaleId).getName());
 		model.addAttribute("role", role);

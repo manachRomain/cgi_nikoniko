@@ -54,4 +54,13 @@ public interface INikoNikoCrudRepository extends IBaseCrudRepository<NikoNiko>{
 	 */
 	@Query(value = "SELECT * FROM nikoniko WHERE entry_date LIKE %:today% AND user_id = :idUser", nativeQuery=true)
 	public NikoNiko getTodayNikoNiko(@Param("today") LocalDate today, @Param("idUser") long idUser);
+
+	/**
+	 * GET NIKONIKO OF A PRECISE DATE
+	 * @param currentDate
+	 * @param idUser
+	 * @return
+	 */
+	@Query(value = "SELECT * FROM nikoniko WHERE entry_date LIKE %:currentDate% AND user_id = :idUser", nativeQuery=true)
+	NikoNiko getNikoByDate(@Param("currentDate") LocalDate currentDate, @Param("idUser") long idUser);
 }
