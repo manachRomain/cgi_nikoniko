@@ -112,6 +112,17 @@
 	    <div style="margin-top:20px"><img src="http://www.tagtele.com/img/videos/thumbs640x360/b/f/b/55318_default.jpg" alt="canard"/></div>
 	</div>
 	</#if>
+	
+	<table class="table table-bordered table-hover">
+		<#list usercomment as field>
+			<tr>
+				<td>
+				${field}
+				</td>
+			</tr>
+		</#list>
+	</table>
+	
 	<div class="container-fluid">
 	    <div class="col-lg-2">
 	        <div class="row-fluid">

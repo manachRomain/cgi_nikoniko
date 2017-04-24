@@ -15,6 +15,7 @@ import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.userdetails.User.UserBuilder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,6 +36,7 @@ import com.cgi.nikoniko.models.tables.NikoNiko;
 import com.cgi.nikoniko.models.tables.RoleCGI;
 import com.cgi.nikoniko.models.tables.Team;
 import com.cgi.nikoniko.models.tables.User;
+import com.cgi.nikoniko.utils.DumpFields;
 import com.cgi.nikoniko.utils.UtilsFunctions;
 
 @Controller
@@ -660,6 +662,14 @@ public class GraphController extends ViewBaseController<User>{
 		}
 
 		List<NikoNiko> listNiko = getNikoPreciseDate(listNikoall, year, month, day);
+		
+		List<String> userComment = new ArrayList<String>();
+		
+		for (int i = 0; i < listNiko.size(); i++) {
+			String userBuffer = listNiko.get(i).getUser().getRegistrationcgi();
+			String comment = listNiko.get(i).getComment();
+			userComment.add(userBuffer + PathFinder.SPACE+ ":" + " "+ comment);
+		}
 
 		int good = 0;
 		int medium = 0;
@@ -679,6 +689,7 @@ public class GraphController extends ViewBaseController<User>{
 			}
 		}
 
+		model.addAttribute("usercomment", userComment);
 		model.addAttribute("idVert",UtilsFunctions.getUserInformations(userCrud).getVerticale().getId());
 		model.addAttribute("title", "Tous les votes du : " + day + " " + getMonthLetter(month) + " " + year + " pour l'equipe : " + teamCrud.findOne(teamId).getName());
 		model.addAttribute("role", role);

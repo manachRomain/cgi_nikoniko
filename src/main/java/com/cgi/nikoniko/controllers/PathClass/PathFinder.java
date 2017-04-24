@@ -83,5 +83,7 @@ public class PathFinder {
 	public final static String TEAM_NAME = "team";
 	public final static String VERTICALE_NAME = "verticale";
 	public final static String NIKO_NAME = "nikoniko";
+
+	public static final String SPACE = " ";
 		
 }
