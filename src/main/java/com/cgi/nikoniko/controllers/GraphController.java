@@ -284,6 +284,7 @@ public class GraphController extends ViewBaseController<User>{
 		//	Sélectionne dans une liste de satisfaction le niveau de satisfaction et	 //
 		//	l'enregistre dans une variable qu'on transmet à la page					 //
 		///////////////////////////////////////////////////////////////////////////////
+		
 		for (int i = 0; i < nikotoday.size(); i++) {
 			if (nikotoday.get(i).getMood() == 3) {
 				good++;
@@ -577,7 +578,6 @@ public class GraphController extends ViewBaseController<User>{
 
 		List<BigInteger> listId = teamCrud.getNikoNikoFromTeam(teamId);
 		List<Long> listNikoId = new ArrayList<Long>();
-		List<NikoNiko> listNikoall = new ArrayList<NikoNiko>();
 		int nbMood = 0;
 
 		if (!listId.isEmpty()) {//if no association => return empty list which can't be use with findAll(ids)
@@ -585,10 +585,9 @@ public class GraphController extends ViewBaseController<User>{
 			for (BigInteger id : listId) {
 				listNikoId.add(id.longValue());
 			}
-			listNikoall =  (List<NikoNiko>) nikoCrud.findAll(listNikoId);
 		}
 
-		List<NikoNiko> listNiko = getNikoToday(listNikoall);
+		List<NikoNiko> listNiko = nikoCrud.getNikoNikosOfATeamWithPreciseDate(todayDate, teamId);
 
 		int good = 0;
 		int medium = 0;
@@ -598,6 +597,7 @@ public class GraphController extends ViewBaseController<User>{
 		//	Sélectionne dans une liste de satisfaction le niveau de satisfaction et	 //
 		//	l'enregistre dans une variable qu'on transmet à la page					 //
 		///////////////////////////////////////////////////////////////////////////////
+		
 		for (int i = 0; i < listNiko.size(); i++) {
 			if (listNiko.get(i).getMood() == 3) {
 				good++;
@@ -634,41 +634,27 @@ public class GraphController extends ViewBaseController<User>{
 	@RequestMapping(path = PathFinder.SHOW_GRAPH_TEAM + PathFinder.PATH + "{nbTable}" + PathFinder.PATH + "{year}" + PathFinder.PATH + "{month}" + PathFinder.PATH + "{day}", method = RequestMethod.GET)
 	public String getNikoFromTeamWithDate(Model model, @PathVariable int nbTable, @PathVariable int year,
 			@PathVariable int month, @PathVariable int day){
-
-		ArrayList<Team> teamList = new ArrayList<Team>();
-		ArrayList<String> teamName = new ArrayList<String>();
-
+		
 		Long userId = UtilsFunctions.getUserInformations(userCrud).getId();
-		teamList = findAllTeamsForUser(userId);
-		String role = testRole(userId);
-
-		for (int i = 0; i < teamList.size(); i++) {
-			teamName.add(teamList.get(i).getName());
-		}
-
+		
+		ArrayList<Team> teamList = teamCrud.getAssociatedUsers(userId);
+		ArrayList<String> teamName = teamCrud.getAssociatedUsersName(userId);
+		
 		Long teamId = teamList.get(nbTable).getId();
-
-		List<BigInteger> listId = teamCrud.getNikoNikoFromTeam(teamId);
-		List<Long> listNikoId = new ArrayList<Long>();
-		List<NikoNiko> listNikoall = new ArrayList<NikoNiko>();
-		int nbMood = 0;
-
-		if (!listId.isEmpty()) {//if no association => return empty list which can't be use with findAll(ids)
-			nbMood = 1;
-			for (BigInteger id : listId) {
-				listNikoId.add(id.longValue());
-			}
-			listNikoall =  (List<NikoNiko>) nikoCrud.findAll(listNikoId);
-		}
-
-		List<NikoNiko> listNiko = getNikoPreciseDate(listNikoall, year, month, day);
+		String role = testRole(userId);
+		LocalDate preciseDate = new LocalDate(year,month,day);
 		
-		List<String> userComment = new ArrayList<String>();
+		Map<String, Integer> usermood = new HashMap<String, Integer>();
 		
-		for (int i = 0; i < listNiko.size(); i++) {
-			String userBuffer = listNiko.get(i).getUser().getRegistrationcgi();
-			String comment = listNiko.get(i).getComment();
-			userComment.add(userBuffer + PathFinder.SPACE+ ":" + " "+ comment);
+		List<NikoNiko> ListNikosTeam = nikoCrud.getNikoNikosOfATeamWithPreciseDate(preciseDate, teamId);
+		
+		for (int i = 0; i < ListNikosTeam.size(); i++) {
+			String userBuffer = ListNikosTeam.get(i).getUser().getRegistrationcgi();
+			String comment = ListNikosTeam.get(i).getComment();
+			int mood = ListNikosTeam.get(i).getMood();
+			
+			usermood.put(userBuffer + " " + ":" + " " + comment, mood);
+			
 		}
 
 		int good = 0;
@@ -679,22 +665,21 @@ public class GraphController extends ViewBaseController<User>{
 		//	Sélectionne dans une liste de satisfaction le niveau de satisfaction et	 //
 		//	l'enregistre dans une variable qu'on transmet à la page					 //
 		///////////////////////////////////////////////////////////////////////////////
-		for (int i = 0; i < listNiko.size(); i++) {
-			if (listNiko.get(i).getMood() == 3) {
+		for (int i = 0; i < ListNikosTeam.size(); i++) {
+			if (ListNikosTeam.get(i).getMood() == 3) {
 				good++;
-			}else if(listNiko.get(i).getMood() == 2){
+			}else if(ListNikosTeam.get(i).getMood() == 2){
 				medium++;
-			}else if(listNiko.get(i).getMood() == 1){
+			}else if(ListNikosTeam.get(i).getMood() == 1){
 				bad++;
 			}
 		}
 
-		model.addAttribute("usercomment", userComment);
+		model.addAttribute("mooder", usermood );	
 		model.addAttribute("idVert",UtilsFunctions.getUserInformations(userCrud).getVerticale().getId());
 		model.addAttribute("title", "Tous les votes du : " + day + " " + getMonthLetter(month) + " " + year + " pour l'equipe : " + teamCrud.findOne(teamId).getName());
 		model.addAttribute("role", role);
 		model.addAttribute("nameteam", teamName);
-		model.addAttribute("mood", nbMood);
 		model.addAttribute("good", good);
 		model.addAttribute("medium", medium);
 		model.addAttribute("bad", bad);
