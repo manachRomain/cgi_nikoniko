@@ -44,7 +44,7 @@ public interface ITeamCrudRepository extends IBaseCrudRepository<Team>{
 	Team findBySerial(String serial);
 
 	/**
-	 * GET USER LIST CORRESPONDING WITH A NAME PARAMETER
+	 * GET TEAM LIST CORRESPONDING WITH A NAME PARAMETER
 	 * @param name
 	 * @return
 	 */
@@ -59,4 +59,6 @@ public interface ITeamCrudRepository extends IBaseCrudRepository<Team>{
 	@Query(value = "SELECT * FROM team WHERE verticale_id = :idVerticale", nativeQuery=true)
 	public ArrayList<Team> getAssociatedTeams(@Param("idVerticale") long idVerticale);
 
+	@Query(value = "SELECT DISTINCT team.* FROM user INNER JOIN user_has_team ON user.id = idLeft INNER JOIN team ON idRight = team.id WHERE user.id=5", nativeQuery=true)
+	public ArrayList<Team> getAssociatedUsers(@Param("idUser") long idUser);
 }

@@ -634,11 +634,15 @@ public class GraphController extends ViewBaseController<User>{
 	@RequestMapping(path = PathFinder.SHOW_GRAPH_TEAM + PathFinder.PATH + "{nbTable}" + PathFinder.PATH + "{year}" + PathFinder.PATH + "{month}" + PathFinder.PATH + "{day}", method = RequestMethod.GET)
 	public String getNikoFromTeamWithDate(Model model, @PathVariable int nbTable, @PathVariable int year,
 			@PathVariable int month, @PathVariable int day){
+		
+		// FIND ALL TEAMS RELATED TO A USER
 
 		ArrayList<Team> teamList = new ArrayList<Team>();
 		ArrayList<String> teamName = new ArrayList<String>();
 
 		Long userId = UtilsFunctions.getUserInformations(userCrud).getId();
+		
+		
 		teamList = findAllTeamsForUser(userId);
 		String role = testRole(userId);
 
@@ -661,14 +665,24 @@ public class GraphController extends ViewBaseController<User>{
 			listNikoall =  (List<NikoNiko>) nikoCrud.findAll(listNikoId);
 		}
 
-		List<NikoNiko> listNiko = getNikoPreciseDate(listNikoall, year, month, day);
+		// PRECISE DATE CATCH BY PARAMETERS
+		LocalDate preciseDate = new LocalDate(year,month,day);
 		
 		List<String> userComment = new ArrayList<String>();
+		List<Integer> moodList = new ArrayList<Integer>();
 		
-		for (int i = 0; i < listNiko.size(); i++) {
-			String userBuffer = listNiko.get(i).getUser().getRegistrationcgi();
-			String comment = listNiko.get(i).getComment();
+		Map<String, Integer> usermood = new HashMap<String, Integer>();
+		
+		List<NikoNiko> testNiko = nikoCrud.getNikoNikosOfATeamWithPreciseDate(preciseDate, teamId);
+		
+		for (int i = 0; i < testNiko.size(); i++) {
+			String userBuffer = testNiko.get(i).getUser().getRegistrationcgi();
+			String comment = testNiko.get(i).getComment();
+			int mood = testNiko.get(i).getMood();
+			
+			usermood.put(userBuffer + " " + ":" + " " + comment, mood);
 			userComment.add(userBuffer + PathFinder.SPACE+ ":" + " "+ comment);
+			moodList.add(mood);
 		}
 
 		int good = 0;
@@ -679,17 +693,19 @@ public class GraphController extends ViewBaseController<User>{
 		//	Sélectionne dans une liste de satisfaction le niveau de satisfaction et	 //
 		//	l'enregistre dans une variable qu'on transmet à la page					 //
 		///////////////////////////////////////////////////////////////////////////////
-		for (int i = 0; i < listNiko.size(); i++) {
-			if (listNiko.get(i).getMood() == 3) {
+		for (int i = 0; i < testNiko.size(); i++) {
+			if (testNiko.get(i).getMood() == 3) {
 				good++;
-			}else if(listNiko.get(i).getMood() == 2){
+			}else if(testNiko.get(i).getMood() == 2){
 				medium++;
-			}else if(listNiko.get(i).getMood() == 1){
+			}else if(testNiko.get(i).getMood() == 1){
 				bad++;
 			}
 		}
 
+		model.addAttribute("mooder", usermood );
 		model.addAttribute("usercomment", userComment);
+		model.addAttribute("moodList",moodList);
 		model.addAttribute("idVert",UtilsFunctions.getUserInformations(userCrud).getVerticale().getId());
 		model.addAttribute("title", "Tous les votes du : " + day + " " + getMonthLetter(month) + " " + year + " pour l'equipe : " + teamCrud.findOne(teamId).getName());
 		model.addAttribute("role", role);

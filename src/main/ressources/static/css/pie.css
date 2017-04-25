@@ -58,7 +58,6 @@ hr {
 	text-align: center;
 	margin-bottom: 10px;
 	margin-top:10px;
-
 }
 
 .align{
@@ -100,9 +99,8 @@ hr {
 }
 
 .myresults{
-    height: 30px;
-    width: 100px;
-    font-size: 10px;
+	display : inline-block;
+    font-size: 12px;
 }
 
 .allresults{
