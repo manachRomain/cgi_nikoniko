@@ -42,17 +42,6 @@ public interface INikoNikoCrudRepository extends IBaseCrudRepository<NikoNiko> {
 	public ArrayList<NikoNiko> getNikoNiko(@Param("name") String name);
 
 	/**
-	 * GET ENTRY DATE OF THE LAST NIKON ENTER BY A USER
-	 * 
-	 * @param lastDay
-	 * @param idUser
-	 * @return
-	 */
-	@Query(value = "SELECT * FROM nikoniko WHERE entry_date LIKE %:lastDay% AND user_id = :idUser", nativeQuery = true)
-	public NikoNiko getNikoDate(@Param("lastDay") LocalDate lastDay,
-			@Param("idUser") long idUser);
-
-	/**
 	 * GET NIKONIKO OF A PRECISE DATE
 	 * 
 	 * @param currentDate
@@ -60,18 +49,8 @@ public interface INikoNikoCrudRepository extends IBaseCrudRepository<NikoNiko> {
 	 * @return
 	 */
 	@Query(value = "SELECT * FROM nikoniko WHERE entry_date LIKE %:currentDate% AND user_id = :idUser", nativeQuery = true)
-	public NikoNiko getNikoByDate(@Param("currentDate") LocalDate currentDate,
-			@Param("idUser") long idUser);
+	public NikoNiko getNikoByDate(@Param("currentDate") LocalDate currentDate, @Param("idUser") long idUser);
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	/**
 	 * GET ALL NIKONIKOS OF A TEAM WITH A PRECISE DATE AND MOOD NOT EQUALS TO 0
 	 * @param date
@@ -116,7 +95,7 @@ public interface INikoNikoCrudRepository extends IBaseCrudRepository<NikoNiko> {
 	public ArrayList<NikoNiko> getAllNikoNikosOfATeam(@Param("idTeam") long idTeam);
 
 	/**
-	 * FIND ALL NIKONIKOS OF A USER WITH PRECISE 
+	 * FIND ALL NIKONIKOS OF A USER WITH PRECISE (DIFF OF getNikoByDate(), USE ARRAYLIST)
 	 * PARAMETER
 	 * 
 	 * @param name
@@ -124,4 +103,5 @@ public interface INikoNikoCrudRepository extends IBaseCrudRepository<NikoNiko> {
 	 */
 	@Query(value = "SELECT * FROM nikoniko INNER JOIN user on nikoniko.user_id = user.id WHERE user.id= :idUser AND nikoniko.entry_date LIKE %:date%", nativeQuery = true)
 	public ArrayList<NikoNiko> getNikoNikoOfUserWithPreciseDate(@Param("idUser") long idUser, @Param("date") LocalDate date);
+
 }

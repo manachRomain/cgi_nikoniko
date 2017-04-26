@@ -126,7 +126,7 @@ public static LocalDate TODAY_DATE = new LocalDate();
 		
 		LocalDate lastDay = TODAY_DATE.minusDays(1);
 
-		NikoNiko niko = nikoCrud.getNikoDate(lastDay, idUser);
+		NikoNiko niko = nikoCrud.getNikoByDate(lastDay, idUser);
 		
 		if (niko == null) {
 			
@@ -160,7 +160,7 @@ public static LocalDate TODAY_DATE = new LocalDate();
 			
 			LocalDate lastDay = TODAY_DATE.minusDays(1);
 			
-			NikoNiko niko = nikoCrud.getNikoDate(lastDay, idUser);
+			NikoNiko niko = nikoCrud.getNikoByDate(lastDay, idUser);
 			
 			return niko;	
 		}
@@ -181,6 +181,7 @@ public static LocalDate TODAY_DATE = new LocalDate();
 	 * @param verticaleCrud
 	 * @return
 	 */
+	@SuppressWarnings("unchecked")
 	public static <T> ArrayList<T> findAny(String modelName, String name, IUserCrudRepository userCrud,ITeamCrudRepository teamCrud, IVerticaleCrudRepository verticaleCrud, INikoNikoCrudRepository nikoCrud){
 		
 		switch (modelName) {
