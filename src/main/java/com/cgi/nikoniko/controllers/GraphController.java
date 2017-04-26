@@ -15,7 +15,6 @@ import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.core.userdetails.User.UserBuilder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,10 +32,8 @@ import com.cgi.nikoniko.dao.IUserHasRoleCrudRepository;
 import com.cgi.nikoniko.dao.IUserHasTeamCrudRepository;
 import com.cgi.nikoniko.dao.IVerticaleCrudRepository;
 import com.cgi.nikoniko.models.tables.NikoNiko;
-import com.cgi.nikoniko.models.tables.RoleCGI;
 import com.cgi.nikoniko.models.tables.Team;
 import com.cgi.nikoniko.models.tables.User;
-import com.cgi.nikoniko.utils.DumpFields;
 import com.cgi.nikoniko.utils.UtilsFunctions;
 
 @Controller
@@ -74,49 +71,6 @@ public class GraphController extends ViewBaseController<User>{
 	public GraphController(Class<User> clazz, String baseURL) {
 		super(clazz, baseURL);
 	}
-
-
-////////////////////////////FIND USER'S ROLES //////////////////////////////////////////////	
-	
-	
-	/**
-	 * FIND USER'S ROLES
-	 * @param idUser
-	 * @return
-	 */
-	public String testRole(Long idUser){
-
-		String role;
-
-		List<Long> ids = new ArrayList<Long>();
-		ArrayList<RoleCGI> roleList = new ArrayList<RoleCGI>();
-
-		List<BigInteger> idsBig = userRoleCrud.findAssociatedRole(idUser);
-
-		if (!idsBig.isEmpty()) {
-			for (BigInteger id : idsBig) {
-				ids.add(id.longValue());
-
-			}
-			roleList = (ArrayList<RoleCGI>) roleCrud.findAll(ids);
-		}
-
-		ArrayList<String> roleNames = new ArrayList<String>();
-		for (int i = 0; i <roleList.size(); i++) {
-			roleNames.add(roleList.get(i).getName());
-		}
-
-		if (roleNames.contains("ROLE_ADMIN")) {
-			role = "admin";
-		}
-		else if (roleNames.contains("ROLE_VP")) {
-			role = "vp";
-		}
-		else {
-			role = "employee";
-		}
-		return role;
-	}	
 	
 
 //////////////////////////// FIND USERS AND TEAM //////////////////////////////////////////////
@@ -205,7 +159,7 @@ public class GraphController extends ViewBaseController<User>{
 
 
 	/**
-	 * ALL NIKONIKO GRAPH FOR AN USER FROM TODAY
+	 * ALL NIKONIKO GRAPH FOR AN USER FROM TODAY "(NEED TO CHANGE CORRESPONDING FTL SAME THAT USE IN FUNCTION BELOW showPieWithDate())"
 	 * @param model
 	 * @param idUser
 	 * @return
@@ -214,40 +168,33 @@ public class GraphController extends ViewBaseController<User>{
 	@RequestMapping(path = PathFinder.PATH + PathFinder.SHOW_GRAPH, method = RequestMethod.GET)
 	public String showPie(Model model) {
 
-		Long idUser = UtilsFunctions.getUserInformations(userCrud).getId();
-		User user = super.getItem(idUser);
-		Set<NikoNiko> niko =  user.getNikoNikos();
-		List<NikoNiko> listOfNiko = new ArrayList<NikoNiko>(niko);
-		List<NikoNiko> nikotoday = getNikoToday(listOfNiko);
-
-		String role = testRole(idUser);
+		User user = UtilsFunctions.getUserInformations(userCrud);
+		NikoNiko nikoToday = nikoCrud.getNikoByDate(super.todayDate, user.getId());
+		String role = UtilsFunctions.getConnectUserRole(userCrud, userRoleCrud, roleCrud);
 
 		int good = 0;
 		int medium = 0;
 		int bad = 0;
 
-		///////////////////////////////////////////////////////////////////////////////
-		//	Sélectionne dans une liste de satisfaction le niveau de satisfaction et	 //
-		//	l'enregistre dans une variable qu'on transmet à la page					 //
-		///////////////////////////////////////////////////////////////////////////////
-		for (int i = 0; i < nikotoday.size(); i++) {
-			if (nikotoday.get(i).getMood() == 3) {
-				good++;
-			}else if(nikotoday.get(i).getMood() == 2){
-				medium++;
-			}else if(nikotoday.get(i).getMood() == 1){
-				bad++;
-			}
+		if (nikoToday.getMood() == 3) {
+			good++;	
 		}
-
+		else if (nikoToday.getMood() == 2) {
+			medium++;
+		} 
+		else if (nikoToday.getMood() == 1) {
+			bad++;
+		} 
+		
 		model.addAttribute("idVert",user.getVerticale().getId());
 		model.addAttribute("title", "Mes votes d'aujourd'hui" );
 		model.addAttribute("role", role);
-		model.addAttribute("mood", UtilsFunctions.getUserLastMood(userCrud.findByLogin(super.checkSession().getName()).getId(), userCrud, nikoCrud));
+		model.addAttribute("mood", UtilsFunctions.getUserLastMood(user.getId(), userCrud, nikoCrud));
 		model.addAttribute("good", good);
 		model.addAttribute("medium", medium);
 		model.addAttribute("bad", bad);
 		model.addAttribute("back", PathFinder.PATH + PathFinder.MENU_PATH);
+		
 		return "graphs" + PathFinder.PATH + "pie";
 	}
 
@@ -265,56 +212,32 @@ public class GraphController extends ViewBaseController<User>{
 	public String showPieWithDate(Model model, @PathVariable int year,
 								@PathVariable int month, @PathVariable int day) {
 
-		Long idUser = UtilsFunctions.getUserInformations(userCrud).getId();
-		User user = super.getItem(idUser);
+		User user = UtilsFunctions.getUserInformations(userCrud);
 		
 		LocalDate currentDate = new LocalDate(year, month, day);
 		
-		Set<NikoNiko> niko =  user.getNikoNikos();
-		List<NikoNiko> listOfNiko = new ArrayList<NikoNiko>(niko);
-		List<NikoNiko> nikotoday = getNikoPreciseDate(listOfNiko, year, month, day);
+		String role = UtilsFunctions.getConnectUserRole(userCrud, userRoleCrud, roleCrud);
 
-		String role = testRole(idUser);
-
-		int good = 0;
-		int medium = 0;
-		int bad = 0;
-
-		///////////////////////////////////////////////////////////////////////////////
-		//	Sélectionne dans une liste de satisfaction le niveau de satisfaction et	 //
-		//	l'enregistre dans une variable qu'on transmet à la page					 //
-		///////////////////////////////////////////////////////////////////////////////
-		
-		for (int i = 0; i < nikotoday.size(); i++) {
-			if (nikotoday.get(i).getMood() == 3) {
-				good++;
-			}else if(nikotoday.get(i).getMood() == 2){
-				medium++;
-			}else{
-				bad++;
-			}
-		}
 		try {
-			model.addAttribute("textAreaOption", nikoCrud.getNikoByDate(currentDate, idUser).getComment());
+			model.addAttribute("textAreaOption", nikoCrud.getNikoByDate(currentDate, user.getId()).getComment());
 		} catch (Exception e) {
 			model.addAttribute("textAreaOption", "");
 		}
 		
 		try {
-			model.addAttribute("motiv", nikoCrud.getNikoByDate(currentDate, idUser).getMood());
+			model.addAttribute("motiv", nikoCrud.getNikoByDate(currentDate, user.getId()).getMood());
 		} catch (Exception e) {
 			model.addAttribute("motiv", 0);
 		}
-	
+		model.addAttribute("good","");
+		model.addAttribute("medium","");
+		model.addAttribute("bad","");
 		
 		model.addAttribute("check", true );
 		model.addAttribute("idVert",user.getVerticale().getId());
 		model.addAttribute("title", "Mon vote de la journ�e du : " + day + " " + getMonthLetter(month) + " " + year );
 		model.addAttribute("role", role);
 		model.addAttribute("mood", UtilsFunctions.getUserLastMood(userCrud.findByLogin(super.checkSession().getName()).getId(), userCrud, nikoCrud));
-		model.addAttribute("good", good);
-		model.addAttribute("medium", medium);
-		model.addAttribute("bad", bad);
 		model.addAttribute("year", year);
 		model.addAttribute("month", month);
 		model.addAttribute("day", day);
@@ -333,15 +256,11 @@ public class GraphController extends ViewBaseController<User>{
 	@RequestMapping(path = PathFinder.SHOW_GRAPH_ALL, method = RequestMethod.GET)
 	public String showAllPie(Model model) {
 
-		Long idUser = UtilsFunctions.getUserInformations(userCrud).getId();
-
-		List<NikoNiko> listOfNikoall = (List<NikoNiko>) nikoCrud.findAll();
-		List<NikoNiko> listOfNiko = getNikoToday(listOfNikoall);
-		String role = testRole(idUser);
+		List<NikoNiko> listOfNiko = nikoCrud.getAllNikoNikosOfAPreciseDate(super.todayDate);
+		String role = UtilsFunctions.getConnectUserRole(userCrud, userRoleCrud, roleCrud);
 
 		int nbMood = 0;
-
-		if (!listOfNiko.isEmpty()) {//if no association => return empty list which can't be use with findAll(ids)
+		if (!listOfNiko.isEmpty()) {
 			nbMood = 1;
 		}
 
@@ -349,10 +268,6 @@ public class GraphController extends ViewBaseController<User>{
 		int medium = 0;
 		int bad = 0;
 
-		///////////////////////////////////////////////////////////////////////////////
-		//	Sélectionne dans une liste de satisfaction le niveau de satisfaction et	 //
-		//	l'enregistre dans une variable qu'on transmet à la page					 //
-		///////////////////////////////////////////////////////////////////////////////
 		for (int i = 0; i < listOfNiko.size(); i++) {
 			if (listOfNiko.get(i).getMood() == 3) {
 				good++;
@@ -371,6 +286,7 @@ public class GraphController extends ViewBaseController<User>{
 		model.addAttribute("medium", medium);
 		model.addAttribute("bad", bad);
 		model.addAttribute("back", PathFinder.PATH + PathFinder.MENU_PATH);
+		
 		return "graphs" + PathFinder.PATH + "pie";
 	}
 
@@ -387,11 +303,10 @@ public class GraphController extends ViewBaseController<User>{
 	public String showAllPieWithDate(Model model, @PathVariable int year,
 			@PathVariable int month, @PathVariable int day) {
 
-		Long idUser = UtilsFunctions.getUserInformations(userCrud).getId();
-
-		List<NikoNiko> listOfNikoall = (List<NikoNiko>) nikoCrud.findAll();
-		List<NikoNiko> listOfNiko = getNikoPreciseDate(listOfNikoall, year, month, day);
-		String role = testRole(idUser);
+		LocalDate currentDate = new LocalDate(year,month,day);
+		List<NikoNiko> listOfNiko = nikoCrud.getAllNikoNikosOfAPreciseDate(currentDate);
+		
+		String role = UtilsFunctions.getConnectUserRole(userCrud, userRoleCrud, roleCrud);
 
 		int nbMood = 0;
 
@@ -403,10 +318,6 @@ public class GraphController extends ViewBaseController<User>{
 		int medium = 0;
 		int bad = 0;
 
-		///////////////////////////////////////////////////////////////////////////////
-		//	Sélectionne dans une liste de satisfaction le niveau de satisfaction et	 //
-		//	l'enregistre dans une variable qu'on transmet à la page					 //
-		///////////////////////////////////////////////////////////////////////////////
 		for (int i = 0; i < listOfNiko.size(); i++) {
 			if (listOfNiko.get(i).getMood() == 3) {
 				good++;
@@ -428,6 +339,7 @@ public class GraphController extends ViewBaseController<User>{
 		model.addAttribute("month", month);
 		model.addAttribute("day", day);
 		model.addAttribute("back", PathFinder.PATH + PathFinder.MENU_PATH);
+		
 		return "graphs" + PathFinder.PATH + "piedate";
 	}
 
@@ -440,24 +352,18 @@ public class GraphController extends ViewBaseController<User>{
 	@RequestMapping(path = PathFinder.SHOW_GRAPH_VERTICALE, method = RequestMethod.GET)
 	public String getNikoFromVerticale(Model model){
 
-		Long userId = UtilsFunctions.getUserInformations(userCrud).getId();
-		int nbMood = 0;
-		User user = super.getItem(userId);
+		User user = UtilsFunctions.getUserInformations(userCrud);
 		Long verticaleId = user.getVerticale().getId();
 
-		List<NikoNiko> listOfNikoall = findNikoNikosOfAVerticaleList(verticaleId);
-		List<NikoNiko> listNiko = getNikoToday(listOfNikoall);
+		List<NikoNiko> listNiko = nikoCrud.getAllNikoNikosOfVerticaleWithPreciseDate(verticaleId, super.todayDate);
 
-		String role = testRole(userId);
+		String role = UtilsFunctions.getConnectUserRole(userCrud, userRoleCrud, roleCrud);
 
+		int nbMood = 0;
 		int good = 0;
 		int medium = 0;
 		int bad = 0;
 
-		///////////////////////////////////////////////////////////////////////////////
-		//	Sélectionne dans une liste de satisfaction le niveau de satisfaction et	 //
-		//	l'enregistre dans une variable qu'on transmet à la page					 //
-		///////////////////////////////////////////////////////////////////////////////
 		if(listNiko.size() != 0){
 			nbMood = 1;
 			for (int i = 0; i < listNiko.size(); i++) {
@@ -495,17 +401,14 @@ public class GraphController extends ViewBaseController<User>{
 			@PathVariable int month, @PathVariable int day){
 		
 		LocalDate currentDate = new LocalDate(year,month,day);
+		User user = UtilsFunctions.getUserInformations(userCrud);
 
-		Long userId = UtilsFunctions.getUserInformations(userCrud).getId();
-		int nbMood = 0;
-		User user = super.getItem(userId);
 		Long verticaleId = user.getVerticale().getId();
 
-		List<NikoNiko> listOfNikoall = findNikoNikosOfAVerticaleList(verticaleId);
-		List<NikoNiko> listNiko = getNikoPreciseDate(listOfNikoall, year, month, day);
+		List<NikoNiko> listNiko = nikoCrud.getAllNikoNikosOfVerticaleWithPreciseDate(verticaleId, currentDate);
+		String role = UtilsFunctions.getConnectUserRole(userCrud, userRoleCrud, roleCrud);
 
-		String role = testRole(userId);
-
+		int nbMood = 0;
 		int good = 0;
 		int medium = 0;
 		int bad = 0;
@@ -528,13 +431,13 @@ public class GraphController extends ViewBaseController<User>{
 		}
 		
 		try {
-			model.addAttribute("textAreaOption", nikoCrud.getNikoByDate(currentDate, userId).getComment());
+			model.addAttribute("textAreaOption", nikoCrud.getNikoByDate(currentDate, user.getId()).getComment());
 		} catch (Exception e) {
 			model.addAttribute("textAreaOption", "");
 		}
 		
 		try {
-			model.addAttribute("motiv", nikoCrud.getNikoByDate(currentDate, userId).getMood());
+			model.addAttribute("motiv", nikoCrud.getNikoByDate(currentDate, user.getId()).getMood());
 		} catch (Exception e) {
 			model.addAttribute("motiv", 0);
 		}
@@ -551,6 +454,7 @@ public class GraphController extends ViewBaseController<User>{
 		model.addAttribute("month", month);
 		model.addAttribute("day", day);
 		model.addAttribute("back", PathFinder.PATH + PathFinder.MENU_PATH);
+		
 		return "graphs" + PathFinder.PATH + "piedate";
 	}
 
@@ -563,40 +467,24 @@ public class GraphController extends ViewBaseController<User>{
 	@RequestMapping(path = PathFinder.SHOW_GRAPH_TEAM + PathFinder.PATH + "{nbTable}", method = RequestMethod.GET)
 	public String getNikoFromTeam(Model model, @PathVariable int nbTable){
 
-		ArrayList<Team> teamList = new ArrayList<Team>();
-		ArrayList<String> teamName = new ArrayList<String>();
-
 		Long userId = UtilsFunctions.getUserInformations(userCrud).getId();
-		teamList = findAllTeamsForUser(userId);
-		String role = testRole(userId);
-
-		for (int i = 0; i < teamList.size(); i++) {
-			teamName.add(teamList.get(i).getName());
-		}
+		
+		ArrayList<Team> teamList = teamCrud.getAssociatedUsers(userId);
+		ArrayList<String> teamName = teamCrud.getAssociatedUsersName(userId);
+		
+		String role = UtilsFunctions.getConnectUserRole(userCrud, userRoleCrud, roleCrud);
 
 		Long teamId = teamList.get(nbTable).getId();
-
-		List<BigInteger> listId = teamCrud.getNikoNikoFromTeam(teamId);
-		List<Long> listNikoId = new ArrayList<Long>();
-		int nbMood = 0;
-
-		if (!listId.isEmpty()) {//if no association => return empty list which can't be use with findAll(ids)
-			nbMood = 1;
-			for (BigInteger id : listId) {
-				listNikoId.add(id.longValue());
-			}
-		}
-
 		List<NikoNiko> listNiko = nikoCrud.getNikoNikosOfATeamWithPreciseDate(todayDate, teamId);
+		
+		int nbMood = 0;
+		if (!listNiko.isEmpty()) {
+			nbMood = 1;
+		}
 
 		int good = 0;
 		int medium = 0;
 		int bad = 0;
-
-		///////////////////////////////////////////////////////////////////////////////
-		//	Sélectionne dans une liste de satisfaction le niveau de satisfaction et	 //
-		//	l'enregistre dans une variable qu'on transmet à la page					 //
-		///////////////////////////////////////////////////////////////////////////////
 		
 		for (int i = 0; i < listNiko.size(); i++) {
 			if (listNiko.get(i).getMood() == 3) {
@@ -635,13 +523,18 @@ public class GraphController extends ViewBaseController<User>{
 	public String getNikoFromTeamWithDate(Model model, @PathVariable int nbTable, @PathVariable int year,
 			@PathVariable int month, @PathVariable int day){
 		
+		// TODO : FIND A WAY TO AVOID UNMATCH GRAPH TEAM WHEN CLICK ON A CALENDAR'S EMOTICON
+		// TODO : CONVERT NBTABLE TO IDTEAM
+
 		Long userId = UtilsFunctions.getUserInformations(userCrud).getId();
 		
 		ArrayList<Team> teamList = teamCrud.getAssociatedUsers(userId);
 		ArrayList<String> teamName = teamCrud.getAssociatedUsersName(userId);
 		
 		Long teamId = teamList.get(nbTable).getId();
-		String role = testRole(userId);
+		
+		String role = UtilsFunctions.getConnectUserRole(userCrud, userRoleCrud, roleCrud);
+		
 		LocalDate preciseDate = new LocalDate(year,month,day);
 		
 		Map<String, Integer> usermood = new HashMap<String, Integer>();
@@ -649,8 +542,10 @@ public class GraphController extends ViewBaseController<User>{
 		List<NikoNiko> ListNikosTeam = nikoCrud.getNikoNikosOfATeamWithPreciseDate(preciseDate, teamId);
 		
 		for (int i = 0; i < ListNikosTeam.size(); i++) {
+			
 			String userBuffer = ListNikosTeam.get(i).getUser().getRegistrationcgi();
 			String comment = ListNikosTeam.get(i).getComment();
+			
 			int mood = ListNikosTeam.get(i).getMood();
 			
 			usermood.put(userBuffer + " " + ":" + " " + comment, mood);
@@ -660,11 +555,7 @@ public class GraphController extends ViewBaseController<User>{
 		int good = 0;
 		int medium = 0;
 		int bad = 0;
-
-		///////////////////////////////////////////////////////////////////////////////
-		//	Sélectionne dans une liste de satisfaction le niveau de satisfaction et	 //
-		//	l'enregistre dans une variable qu'on transmet à la page					 //
-		///////////////////////////////////////////////////////////////////////////////
+		
 		for (int i = 0; i < ListNikosTeam.size(); i++) {
 			if (ListNikosTeam.get(i).getMood() == 3) {
 				good++;
@@ -691,53 +582,6 @@ public class GraphController extends ViewBaseController<User>{
 		return "graphs" + PathFinder.PATH + "pieTeamdate";
 	}
 
-	/**
-	 * Get nikoniko's list from today
-	 * @param listOfNiko
-	 * @return
-	 */
-	public List<NikoNiko> getNikoToday(List<NikoNiko> listOfNiko){
-
-		LocalDate nikodate = new LocalDate();
-		LocalDate date;
-		List<NikoNiko> nikotoday = new ArrayList<NikoNiko>();
-
-		for (int i = 0; i < listOfNiko.size(); i++) {
-			Date firstniko = listOfNiko.get(i).getEntryDate();
-			nikodate = new LocalDate(firstniko);
-			date = new LocalDate();
-			if (nikodate.isEqual(date)) {
-				nikotoday.add(listOfNiko.get(i));
-			}
-		}
-
-		return nikotoday;
-	}
-
-	/**
-	* Get nikoniko's list from one day of the year
-	* @param listOfNiko
-	* @param year
-	* @param month
-	* @param day
-	* @return
-	*/
-	public List<NikoNiko> getNikoPreciseDate(List<NikoNiko> listOfNiko, int year, int month, int day){
-
-	LocalDate nikodate = new LocalDate();
-	LocalDate date = new LocalDate().withYear(year).withMonthOfYear(month).withDayOfMonth(day);
-	List<NikoNiko> niko = new ArrayList<NikoNiko>();
-
-	for (int i = 0; i < listOfNiko.size(); i++) {
-		Date firstniko = listOfNiko.get(i).getEntryDate();
-		nikodate = new LocalDate(firstniko);
-		if (nikodate.isEqual(date)) {
-			niko.add(listOfNiko.get(i));
-		}
-	}
-
-	return niko;
-	}
 
 	/**
 	 * GET MONTH NAME
@@ -752,35 +596,6 @@ public class GraphController extends ViewBaseController<User>{
 		return monthName;
 	}
 	
-	/**
-	 * Recupère les nikonikos par rapport à une verticale
-	 * @param idVert
-	 * @return
-	 */
-	public List<NikoNiko> findNikoNikosOfAVerticaleList(Long idVert){
-		
-		ArrayList<NikoNiko> tempVertNikonikos = new ArrayList<NikoNiko>();
-
-		List<NikoNiko> vertNikonikos = new ArrayList<NikoNiko>();
-
-		List<Team> vertTeams = new ArrayList<Team>();
-
-		if (!verticaleCrud.findOne(idVert).getTeams().isEmpty()) {
-			vertTeams.addAll(verticaleCrud.findOne(idVert).getTeams());
-
-			for (Team team : vertTeams) {
-				tempVertNikonikos.addAll(findNikoNikosOfATeam(team.getId()));
-			}
-		}
-		for (NikoNiko niko : tempVertNikonikos) {
-			if (!vertNikonikos.contains(niko)) {
-				vertNikonikos.add(niko);
-			}
-		}
-		
-		return vertNikonikos;
-	}
-
 	/**
 	 * SELECTION NIKONIKO PAR RAPPORT A UN ENSEMBLE (TEAM, VERTICALE, ETC...)
 	 */
@@ -868,7 +683,6 @@ public class GraphController extends ViewBaseController<User>{
 
 		ArrayList<Map<String,Object>> days = new ArrayList<Map<String,Object>>();
 
-		ArrayList<NikoNiko> nikos = findNikoNikosOfAVerticale(idVert);
 
 		//###################################################################
 		//#Check if given requestPAram values of month and year are integers#
@@ -962,9 +776,10 @@ public class GraphController extends ViewBaseController<User>{
 			days.add(new HashMap<String, Object>());
 
 			days.get(i-1).put(jourSemaine[dateLocale.withDayOfMonth(i).getDayOfWeek()-1], i);
-
-			//fonction a importer
-			List<NikoNiko> nikostemp = getNikoPreciseDate((List<NikoNiko>)nikos,dateLocale.getYear(),dateLocale.getMonthOfYear(),i);
+			
+			LocalDate dateBuffer = new LocalDate(dateLocale.getYear(), dateLocale.getMonthOfYear(), i);
+			
+			List<NikoNiko> nikostemp = nikoCrud.getAllNikoNikosOfVerticaleWithPreciseDate(idVert, dateBuffer);
 
 			int countNikosBad = 0;
 			int countNikosNeut = 0;
@@ -1100,8 +915,6 @@ public class GraphController extends ViewBaseController<User>{
 
 		ArrayList<Map<String,Object>> days = new ArrayList<Map<String,Object>>();
 
-		ArrayList<NikoNiko> nikos = findNikoNikosOfATeam(idTeam);
-
 		//###################################################################
 		//#Check if given requestPAram values of month and year are integers#
 		//###################################################################
@@ -1194,9 +1007,10 @@ public class GraphController extends ViewBaseController<User>{
 			days.add(new HashMap<String, Object>());
 
 			days.get(i-1).put(jourSemaine[dateLocale.withDayOfMonth(i).getDayOfWeek()-1], i);
+			
+			LocalDate dateBuffer = new LocalDate(dateLocale.getYear(), dateLocale.getMonthOfYear(),i);
 
-			//fonction a importer
-			List<NikoNiko> nikostemp = getNikoPreciseDate((List<NikoNiko>)nikos,dateLocale.getYear(),dateLocale.getMonthOfYear(),i);
+			List<NikoNiko> nikostemp = nikoCrud.getNikoNikosOfATeamWithPreciseDate(dateBuffer, idTeam);
 
 			int countNikosBad = 0;
 			int countNikosNeut = 0;
@@ -1274,6 +1088,7 @@ public class GraphController extends ViewBaseController<User>{
 		model.addAttribute("monthName",moisAnnee[monthToUse-1]);
 		model.addAttribute("nbweeks",nbWeeks);
 		model.addAttribute("teamName",teamCrud.findOne(idTeam).getName());
+		model.addAttribute("teamId",idTeam);
 		model.addAttribute("back", PathFinder.PATH + PathFinder.MENU_PATH);
 
 		return "nikoniko/teamCalendarView";
@@ -1427,9 +1242,13 @@ public class GraphController extends ViewBaseController<User>{
 			days.add(new HashMap<String, Object>());
 
 			days.get(i-1).put(jourSemaine[dateLocale.withDayOfMonth(i).getDayOfWeek()-1], i);
+			
+			LocalDate dateBuffer = new LocalDate(dateLocale.getYear(), dateLocale.getMonthOfYear(),i);
 
 			//fonction a importer
-			List<NikoNiko> nikostemp = getNikoPreciseDate((List<NikoNiko>)nikos,dateLocale.getYear(),dateLocale.getMonthOfYear(),i);
+			//List<NikoNiko> nikostemp = getNikoPreciseDate((List<NikoNiko>)nikos,dateLocale.getYear(),dateLocale.getMonthOfYear(),i);
+			
+			List<NikoNiko> nikostemp = nikoCrud.getNikoNikoOfUserWithPreciseDate(idUser, dateBuffer);
 
 			int nikoMood = 0;
 

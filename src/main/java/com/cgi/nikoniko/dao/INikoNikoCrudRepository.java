@@ -53,17 +53,6 @@ public interface INikoNikoCrudRepository extends IBaseCrudRepository<NikoNiko> {
 			@Param("idUser") long idUser);
 
 	/**
-	 * GET NIKONIKO OF THE CURRENT DAY
-	 * 
-	 * @param today
-	 * @param idUser
-	 * @return
-	 */
-	@Query(value = "SELECT * FROM nikoniko WHERE entry_date LIKE %:today% AND user_id = :idUser", nativeQuery = true)
-	public NikoNiko getTodayNikoNiko(@Param("today") LocalDate today,
-			@Param("idUser") long idUser);
-
-	/**
 	 * GET NIKONIKO OF A PRECISE DATE
 	 * 
 	 * @param currentDate
@@ -74,8 +63,65 @@ public interface INikoNikoCrudRepository extends IBaseCrudRepository<NikoNiko> {
 	public NikoNiko getNikoByDate(@Param("currentDate") LocalDate currentDate,
 			@Param("idUser") long idUser);
 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	/**
+	 * GET ALL NIKONIKOS OF A TEAM WITH A PRECISE DATE AND MOOD NOT EQUALS TO 0
+	 * @param date
+	 * @param idTeam
+	 * @return
+	 */
 	@Query(value = "SELECT * FROM nikoniko INNER JOIN user ON user_id = user.id INNER JOIN user_has_team ON user.id=idLeft WHERE entry_date like %:date%  AND idRight = :idTeam AND mood != 0", nativeQuery = true)
 	public List<NikoNiko> getNikoNikosOfATeamWithPreciseDate(
 			@Param("date") LocalDate date, @Param("idTeam") long idTeam);
+	
+	/**
+	 * GET ALL NIKONIKOS OF A VERTICALE (EXCLUDE DATE)
+	 * @param idVert
+	 * @return
+	 */
+	@Query(value ="SELECT nikoniko.* FROM verticale INNER JOIN user ON  verticale.id = user.verticale_id INNER JOIN nikoniko ON user.id = nikoniko.user_id WHERE verticale.id = :idVert", nativeQuery = true)
+	public List<NikoNiko> getAllNikoNikosOfAVerticale(@Param("idVert") long idVert);
 
+	/**
+	 * GET ALL NIKONIKOS OF A VERTICALE (INCLUDE PRECISE  DATE)
+	 * @param idVert
+	 * @param date
+	 * @return
+	 */
+	@Query(value ="SELECT nikoniko.* FROM verticale INNER JOIN user ON  verticale.id = user.verticale_id INNER JOIN nikoniko ON user.id = nikoniko.user_id WHERE verticale.id = :idVert AND entry_date LIKE %:date%", nativeQuery = true)
+	public List<NikoNiko> getAllNikoNikosOfVerticaleWithPreciseDate(@Param("idVert") long idVert, @Param("date") LocalDate date);
+
+	/**
+	 * GET ALL NIKONIKO OF A PRECISE DATE
+	 * @param date
+	 * @return
+	 */
+	@Query(value="SELECT * FROM nikoniko WHERE entry_date LIKE %:date%", nativeQuery=true)
+	public List<NikoNiko> getAllNikoNikosOfAPreciseDate(@Param("date") LocalDate date);
+
+	/**
+	 * GET ALL NIKONIKOS OF A TEAM
+	 * @param idTeam
+	 * @return
+	 */
+	@Query(value ="SELECT nikoniko.* FROM team INNER JOIN user_has_team ON team.id = user_has_team.idRight INNER JOIN user ON user_has_team.idLeft = user.id INNER JOIN nikoniko ON user.id= nikoniko.user_id WHERE team.id = :idTeam", nativeQuery= true)
+	public ArrayList<NikoNiko> getAllNikoNikosOfATeam(@Param("idTeam") long idTeam);
+
+	/**
+	 * FIND ALL NIKONIKOS OF A USER WITH PRECISE 
+	 * PARAMETER
+	 * 
+	 * @param name
+	 * @return
+	 */
+	@Query(value = "SELECT * FROM nikoniko INNER JOIN user on nikoniko.user_id = user.id WHERE user.id= :idUser AND nikoniko.entry_date LIKE %:date%", nativeQuery = true)
+	public ArrayList<NikoNiko> getNikoNikoOfUserWithPreciseDate(@Param("idUser") long idUser, @Param("date") LocalDate date);
 }

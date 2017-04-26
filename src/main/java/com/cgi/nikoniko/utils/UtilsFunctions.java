@@ -251,6 +251,7 @@ public static LocalDate TODAY_DATE = new LocalDate();
 
 		login = auth.getName();
 		user = userCrud.findByLogin(login);
+		
 		roleList = UtilsFunctions.setRolesForUserGet(user.getId(), userRoleCrud, roleCrud);
 		roleNames = UtilsFunctions.convertObjectToString(roleList);
 

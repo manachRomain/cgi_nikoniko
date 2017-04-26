@@ -234,7 +234,7 @@ public class UserController extends ViewBaseController<User> {
 		model.addAttribute("page",user.getFirstname() + " " + PathFinder.CREATE_ACTION.toUpperCase());
 		model.addAttribute("sortedFields",NikoNiko.FIELDS);
 		try {
-			model.addAttribute("textAreaOption", nikoCrud.getTodayNikoNiko(TODAY_DATE, userId).getComment());
+			model.addAttribute("textAreaOption", nikoCrud.getNikoByDate(TODAY_DATE, userId).getComment());
 		} catch (Exception e) {
 			model.addAttribute("textAreaOption","");
 		}
