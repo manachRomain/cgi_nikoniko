@@ -61,30 +61,34 @@
 <div class="container-fluid">
 	<div class="row-fluid">
 		<div class="col-lg-12">
-
 			<#if roles == "vp">
 				<h2> Gestion </h2>
-				<a class = "btn btn-default" href=""> Menu graphes </a> <br>
+				- <a class = "" href=""> Menu graphes </a> <br>
 			<#else>
 			</#if>
 
 			<#if roles == "gestionTeam">
 				<h2> Gestion </h2>
-				<a class = "btn btn-default" href="/team/"> Gérer équipe </a> <br>
+				- <a class = "" href="/team/"> Gérer équipe </a> <br>
 			<#else>
 			</#if>
-
-			<h2> Niko Niko </h2>
-			<a class = "btn btn-default" href="${myCalendar}"> Voir calendrier personnel <a> <br>
-			<a class = "btn btn-default" href="${myVertCalendar}"> Voir calendrier verticale <a> <br>
-			<a class = "btn btn-default"href="${pie_chart}"> Voir vos résultats <a> <br>
+			<h2 style="text-decoration: underline"> Visualisation </h2>
+			<ul>
+				<li> <a class = "" href="${myCalendar}"> Calendrier personnel </a> </li>
+				<li> <a class = ""href="${pie_chart}"> Autres resultats </a> </li>
+			</ul>
 			<#if mood == 0 || status == false>
-					<a class = "btn btn-default" href="${add_nikoniko}"> Pas de vote enregistré... On vote ? </a> <br>
+				<h2 style="text-decoration: underline"> Vote du jour </h2>
+				<ul>
+					<li> <a class = "" href="${add_nikoniko}"> Pas de vote enregistré... On vote ? </a> </li>
+				</ul>
 			<#else>
 			</#if>
 			<#if lastNiko == true>
-			 	<a class ="btn btn-default" href="${add_last}"> Voter pour la veille ? </a>
-
+				<h2 style="text-decoration: underline"> Vote de la veille </h2>
+				<ul>
+			 		<li> <a class ="" href="${add_last}"> Voter pour la veille ? </a> </li>
+			 	</ul>
 			<#else>
 			</#if>
 		</div>

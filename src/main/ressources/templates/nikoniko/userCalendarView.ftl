@@ -17,37 +17,54 @@
 <body>
 	<div class="container-fluid">
 	    <div class="row-fluid">
-	        <div class="col-lg-2">
+	        <div class="col-lg-2  col-xs-4">
 	            <img class="logo" src="https://upload.wikimedia.org/wikipedia/fr/5/51/LOGO-CGI-1993-1998.svg">
 	        </div>
-	        <div class="col-lg-8">
+	        <div class="col-lg-8 col-xs-4">
 	            <div class="title">Niko-Niko</div>
 	        </div>
-	        <div class="col-lg-2">
+	        <div class="col-lg-2 col-xs-4">
 	            <div class="row-fluid">
-	                <div class="col-lg-12">
-	                    <div class="align">
-	                    <button onclick="location.href='/logout' " class="logout"> Déconnexion </button>
-	                    <button onclick="location.href='${back}'" class="vote"> Retour </button>
-	                    </div>
-	                </div>
+	                   <div align="right" class="row-fluid">
+		                    <button onclick="location.href='/logout' " class="logout"> Deconnexion </button>
+		               </div>
+		               <div align="right" class="row-fluid">
+		                    <button onclick="location.href='/menu'" class="home"> Menu </button>
+		               </div>
 	            </div>
 	        </div>
 	    </div>
 	</div>
-	<br>
+	
+	<hr>
 
+	<div class="container-fluid">
+	<div class="row-fluid">
 	<div class = "date_buttons">
+		<div class="col-lg-4 col-xs-4">
 		<span class = "previous_button">
 			<a href="?month=${monthToUse}&year=${yearToUse?c}&action=previous">Mois précédent</a>
 		</span>
+		</div>
+		<div class="col-lg-4 col-xs-4">
 		<span class = "month_year">
 			Vos résultats pour ${monthName} ${yearToUse}
 		</span>
+		</div>
+		<div class="col-lg-4 col-xs-4">
 		<span class = "next_button">
 			<a href="?month=${monthToUse}&year=${yearToUse?c}&action=next">Mois suivant</a>
 		</span>
+		</div>
 	</div>
+	</div>
+	</div>
+	
+	<hr>
+	
+	<div class="container-fluid">
+		<div class="row-fluid">
+		<div class="col-lg-12">
 	<table class="table table-bordered table-hover">
 		<tr>
 			<#list jourSemaine as jour>
@@ -120,11 +137,19 @@
 				</#if>
 			</tr>
 		</#list>
-
-
 	</table>
+	</div>
+	</div>
+	</div>
 
-	<a href="/menu/">Back</a>
+	<!-- FOOTER -->
+	<div class="container-fluid">
+		<div class="row-fluid">
+			<div class="col-lg-12">
+				<div class="copyright">&copy; Niko-Niko CGI 2017</div>
+			</div>
+		</div>
+	</div>
 
 </body>
 </html>

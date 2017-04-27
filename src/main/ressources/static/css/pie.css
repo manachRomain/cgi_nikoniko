@@ -27,6 +27,13 @@ hr {
 	margin-top: 40px;
 }
 
+.home{
+	height: 30px;
+	width: 100px;
+	font-size: 10px;
+	margin-top: 5px;
+}
+
 /* BUTTONS HEAD */
 
 .logout{

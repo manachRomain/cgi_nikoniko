@@ -9,6 +9,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -199,6 +200,12 @@ public class GraphController extends ViewBaseController<User>{
 			bad++;
 		} 
 		
+		try {
+			model.addAttribute("textAreaOption", nikoCrud.getNikoByDate(super.todayDate, user.getId()).getComment());
+		} catch (Exception e) {
+			model.addAttribute("textAreaOption", "");
+		}
+		
 		model.addAttribute("teamnameid", teamsNameId);
 		model.addAttribute("idVert",user.getVerticale().getId());
 		model.addAttribute("title", "Mes votes d'aujourd'hui" );
@@ -224,8 +231,10 @@ public class GraphController extends ViewBaseController<User>{
 	@RequestMapping(path = PathFinder.SHOW_GRAPH + PathFinder.PATH + "{year}" +
 					PathFinder.PATH + "{month}" + PathFinder.PATH + "{day}", method = RequestMethod.GET)
 	public String showPieWithDate(Model model, @PathVariable int year,
-								@PathVariable int month, @PathVariable int day) {
+								@PathVariable int month, @PathVariable int day, HttpServletRequest request) {
 
+		String lastUrl = request.getHeader("referer");
+		
 		User user = UtilsFunctions.getUserInformations(userCrud);
 		
 		LocalDate currentDate = new LocalDate(year, month, day);
@@ -256,6 +265,8 @@ public class GraphController extends ViewBaseController<User>{
 		model.addAttribute("month", month);
 		model.addAttribute("day", day);
 		model.addAttribute("back", PathFinder.PATH + PathFinder.MENU_PATH);
+		
+		model.addAttribute("lastUrl", lastUrl);
 		
 		return "graphs" + PathFinder.PATH + "piedate";
 	}
@@ -1125,10 +1136,12 @@ public class GraphController extends ViewBaseController<User>{
 			@RequestParam(defaultValue = "null") String month,
 			@RequestParam(defaultValue = "null") String year,
 			@RequestParam(defaultValue = "") String action,
-			HttpServletResponse response) throws IOException {
+			HttpServletResponse response, HttpServletRequest request) throws IOException {
 
 		//TODO : Check if the calendar for this idUser can be see by the user of the current session
 		Long idUser = userCrud.findByLogin(super.checkSession().getName()).getId();
+		
+		String lastUrl = request.getHeader("referer");
 
 		try {
 			userCrud.findOne(idUser).getLogin();
@@ -1329,6 +1342,10 @@ public class GraphController extends ViewBaseController<User>{
 		model.addAttribute("monthName",moisAnnee[monthToUse-1]);
 		model.addAttribute("nbweeks",nbWeeks);
 		model.addAttribute("back", PathFinder.PATH + PathFinder.MENU_PATH);
+		
+		model.addAttribute("lastUrl", lastUrl);
+		
+		
 
 		return "nikoniko/userCalendarView";
 	}

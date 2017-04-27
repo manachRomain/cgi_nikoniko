@@ -80,29 +80,32 @@
 </div>
 
 <hr>
-<#if mood != 0>
-<div class="welcome"> ${title}
-    <div class="piechart" id="piechart" style="width: 700px; height: 400px;"></div>
-</div>
-<#else>
-<div class="welcome"> Pas de résultats disponibles...
-    <div style="margin-top:20px"><img src="http://www.tagtele.com/img/videos/thumbs640x360/b/f/b/55318_default.jpg" alt="canard"/></div>
-</div>
-</#if>
+					
 <div class="container-fluid">
-        <div class="row-fluid">
-            <div class="col-lg-8">
-                <div>
-                <#if role != "admin">
-	                <button onclick="location.href='/graph/nikoniko/month'" class="myresults"> Votre calendrier </button>
-	                <button onclick="location.href='/graph/nikonikovert/${idVert}/month'" class="myresults"> Calendrier verticale </button>
-	                <#list teamnameid as teamName, idsTeam>
-	                	<button onclick="location.href='/graph/nikonikoteam/${idsTeam}/month'" class="myresults"> Calendrier team : ${teamName} </button>
-	                </#list>
-                </#if>
-                </div>
-            </div>
-        </div>
+	<div class="row-fluid">
+		<div class="col-lg-12">
+			<h2 style="text-decoration: underline"> Vos options </h2>
+		</div>
+	</div>
+	<div class="row-fluid">
+    	<#if role != "admin">
+	        <div class="col-lg-2">
+	        	<div style="text-decoration : underline; margin-bottom : 10px"> Calendriers de votre verticale : </div>
+	        	<ul>
+	            	<li> <a href="/graph/nikonikovert/${idVert}/month" class="myresults"> Calendrier verticale </a> </li>
+	            </ul>
+	        </div>
+	        <div class="col-lg-2">
+	        	<div style="text-decoration : underline; margin-bottom : 10px"> Calendriers de vos teams : </div>
+	        	<ul>
+	            	<#list teamnameid as teamName, idsTeam>
+	           			<li> <a style="margin-bottom : 5px" href="/graph/nikonikoteam/${idsTeam}/month" class="myresults"> Calendrier team : ${teamName} </a> </li>
+	            	</#list>
+	            </ul>
+	        </div>
+            </#if>
+       	</div>
+    </div>
 </div>
 
 <!-- FOOTER -->

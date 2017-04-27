@@ -63,12 +63,6 @@
 					<li> <a href="${go_roles}"> Roles </a> </li>
 				</ul>
 			</div>
-			<div class="row-fluid">
-				<div class="text"> Visualisation des graphes </div>
-				<ul>
-					<li> <a href="${go_graphes}"> Menu visualisation </a> </li>
-				</ul>
-			</div>
 		</div>
 	</div>
 </div>

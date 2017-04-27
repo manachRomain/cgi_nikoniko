@@ -57,21 +57,25 @@
     </script>
 </head>
 <body>
+
 	<div class="container-fluid">
 	    <div class="row-fluid">
-	        <div class="col-lg-2">
+	        <div class="col-lg-2  col-xs-4">
 	            <img class="logo" src="https://upload.wikimedia.org/wikipedia/fr/5/51/LOGO-CGI-1993-1998.svg">
 	        </div>
-	        <div class="col-lg-8">
+	        <div class="col-lg-8 col-xs-4">
 	            <div class="title">Niko-Niko</div>
 	        </div>
-	        <div class="col-lg-2">
+	        <div class="col-lg-2 col-xs-4">
 	            <div class="row-fluid">
-	                <div class="col-lg-12">
-	                    <div class="align">
+	                   <div align="right" class="row-fluid">
 		                    <button onclick="location.href='/logout' " class="logout"> Deconnexion </button>
-		                    <button onclick="location.href='${back}'" class="vote"> Retour </button>
-	                    </div>
+		               </div>
+		               <div align="right" class="row-fluid">
+		                    <button onclick="location.href='/menu'" class="home"> Menu </button>
+		               </div>
+		               <div align="right" class="row-fluid">
+		                    <button onclick="location.href='${lastUrl}'" class="vote"> Retour </button>               
 	                </div>
 	            </div>
 	        </div>
@@ -112,28 +116,6 @@
 		<#else>
 			 <div class="piechart" id="piechart" style="width: 700px; height: 400px;"></div>
 		</#if>
-	
-	<div class="container-fluid">
-	    <div class="col-lg-2">
-	        <div class="row-fluid">
-	            <div class="col-lg-8">
-	                <div class="alignleft">
-	                <#if role != "admin">
-		                <button onclick="location.href='/graph/showgraphverticale/${year?c}/${month}/${day}'" class="resultsverticale"> Resultats verticale </button>
-		                <button onclick="location.href='/graph/showgraphteam/0/${year?c}/${month}/${day}'" class="resultsteam"> Resultats equipes </button>
-	                </#if></div>
-	            </div>
-	            <div class="col-lg-4">
-	                <div class="alignleft">
-	                <#if role != "admin">
-		                <button onclick="location.href='/graph/nikoniko/month'" class="resultsteam"> Calendrier </button>
-		                <button onclick="location.href='/graph/nikonikovert/${idVert}/month'" class="resultsteam"> Calendrier verticale </button>
-	                </#if>
-	                </div>
-	            </div>
-	        </div>
-	    </div>
-	</div>
 
 	<!-- FOOTER -->
 	<div class="container-fluid">

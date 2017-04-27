@@ -129,8 +129,9 @@
 	            </div>
 	        </div>
 	    </div>
-
 	</div>
+	
+	
 	<!-- FOOTER -->
 	<div class="container-fluid">
 		<div class="row-fluid">
@@ -139,6 +140,7 @@
 			</div>
 		</div>
 	</div>
+	
 </body>
 </html>
 

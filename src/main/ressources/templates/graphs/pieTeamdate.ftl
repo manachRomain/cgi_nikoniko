@@ -83,21 +83,6 @@
 	
 	<div class="container-fluid">
 		<div class="row-fluid">
-			 <div class="col-lg-2">
-		    	<div class="row-fluid">
-		    		<div style ="text-decoration: underline; margin-bottom : 10px"> Vos equipes : </div>
-		    		<#list nameteam>
-			            <#items as nameteam>
-			            	<button class="myresults" onclick="location.href='/graph/showgraphteam/${nameteam?counter-1}/${year?c}/${month}/${day}'"> ${nameteam} </button>
-			           	</#items>
-			        </#list>
-				</div>
-		    </div>
-		</div>
-	</div>
-	
-	<div class="container-fluid">
-		<div class="row-fluid">
 			<div class="col-lg-8">
 				<div class="welcome"> ${title}
 				    <div class="piechart" id="piechart" style="width: 700px; height: 400px;"></div>
@@ -120,25 +105,6 @@
 				</div>
 		    </div>
 		</div>
-	</div>
-	
-	<div class="container-fluid">
-		<div class="row-fluid">
-		    <div class="col-lg-6">
-		        <div class="row-fluid">	  
-		        	<div style ="text-decoration: underline; margin-bottom : 10px">  Vos options : </div>     
-		        	<button onclick="location.href='/graph/showgraph/${year?c}/${month}/${day}'" class="myresults"> Mes résultats </button>
-		            <#if role != "employee">
-		            	<button onclick="location.href='/graph/showgraphall/${year?c}/${month}/${day}'" class="allresults"> Tous les résultats </button>
-		            </#if>
-		            <button onclick="location.href='/graph/showgraphverticale/${year?c}/${month}/${day}'" class="myresults"> Resultats verticale </button>	           	                           
-		            <#if role != "admin">
-			            <button onclick="location.href='/graph/nikoniko/month'" class="myresults"> Calendrier </button>
-			            <button onclick="location.href='/graph/nikonikovert/${idVert}/month'" class="myresults"> Calendrier verticale  </button>
-		            </#if>	               
-		        </div>
-		    </div>
-	    </div>
 	</div>
 	
 	<!-- FOOTER -->

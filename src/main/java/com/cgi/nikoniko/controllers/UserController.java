@@ -287,7 +287,14 @@ public class UserController extends ViewBaseController<User> {
 				NikoNiko nikoUpdate = nikoCrud.findOne(idMax);
 
 				nikoUpdate.setChange_date(date);
-				nikoUpdate.setComment(comment);
+				
+				if (mood == 0) {
+					nikoUpdate.setComment("");
+				}
+				
+				else {
+					nikoUpdate.setComment(comment);
+				}
 				nikoUpdate.setMood(mood);
 
 				nikoCrud.save(nikoUpdate);
