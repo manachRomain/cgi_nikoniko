@@ -75,5 +75,12 @@ public interface ITeamCrudRepository extends IBaseCrudRepository<Team>{
 	@Query(value = "SELECT DISTINCT team.name FROM user INNER JOIN user_has_team ON user.id = idLeft INNER JOIN team ON idRight = team.id WHERE user.id=:idUser", nativeQuery=true)
 	public ArrayList<String> getAssociatedUsersName(@Param("idUser") long idUser);
 
+	/**
+	 * GET ALL TEAMS IDS RELATED TO ONE USER
+	 * @param idUser
+	 * @return
+	 */
+	@Query(value = "SELECT DISTINCT team.id FROM user INNER JOIN user_has_team ON user.id = idLeft INNER JOIN team ON idRight = team.id WHERE user.id=:idUser", nativeQuery=true)
+	public ArrayList<BigInteger> getAssociatedTeamIdsForUser(@Param("idUser") long idUser);
 	
 }

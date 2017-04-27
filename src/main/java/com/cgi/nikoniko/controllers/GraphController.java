@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.servlet.http.HttpServletResponse;
 
 import org.joda.time.LocalDate;
@@ -32,6 +33,7 @@ import com.cgi.nikoniko.models.tables.NikoNiko;
 import com.cgi.nikoniko.models.tables.Team;
 import com.cgi.nikoniko.models.tables.User;
 import com.cgi.nikoniko.utils.UtilsFunctions;
+import com.jayway.jsonpath.internal.function.numeric.Max;
 
 @Controller
 @RequestMapping(GraphController.BASE_URL)
@@ -72,6 +74,7 @@ public class GraphController extends ViewBaseController<User>{
 
 //////////////////////////// FIND USERS AND TEAM //////////////////////////////////////////////
 	
+	// TODO : TO MODIFIED
 	
 	/**
 	 * FIND ALL TEAMS OF USER
@@ -168,6 +171,19 @@ public class GraphController extends ViewBaseController<User>{
 		User user = UtilsFunctions.getUserInformations(userCrud);
 		NikoNiko nikoToday = nikoCrud.getNikoByDate(super.todayDate, user.getId());
 		String role = UtilsFunctions.getConnectUserRole(userCrud, userRoleCrud, roleCrud);
+		
+		// USELESS
+		ArrayList<Team> teamList = teamCrud.getAssociatedUsers(user.getId());
+		
+		ArrayList<String> teamName = teamCrud.getAssociatedUsersName(user.getId());
+		ArrayList<BigInteger> teamIds = teamCrud.getAssociatedTeamIdsForUser(user.getId());
+		
+		// MAP TO RELATE TEAM NAME WITH HIS ID
+		Map<String, BigInteger> teamsNameId = new HashMap<String, BigInteger>();
+		
+		for (int i = 0; i < teamList.size(); i++) {
+			teamsNameId.put(teamName.get(i), teamIds.get(i));
+		}
 
 		int good = 0;
 		int medium = 0;
@@ -183,6 +199,7 @@ public class GraphController extends ViewBaseController<User>{
 			bad++;
 		} 
 		
+		model.addAttribute("teamnameid", teamsNameId);
 		model.addAttribute("idVert",user.getVerticale().getId());
 		model.addAttribute("title", "Mes votes d'aujourd'hui" );
 		model.addAttribute("role", role);
@@ -520,15 +537,18 @@ public class GraphController extends ViewBaseController<User>{
 	public String getNikoFromTeamWithDate(Model model, @PathVariable int nbTable, @PathVariable int year,
 			@PathVariable int month, @PathVariable int day){
 		
-		// TODO : FIND A WAY TO AVOID UNMATCH GRAPH TEAM WHEN CLICK ON A CALENDAR'S EMOTICON
-		// TODO : CONVERT NBTABLE TO IDTEAM
-
 		Long userId = UtilsFunctions.getUserInformations(userCrud).getId();
 		
-		ArrayList<Team> teamList = teamCrud.getAssociatedUsers(userId);
 		ArrayList<String> teamName = teamCrud.getAssociatedUsersName(userId);
+		ArrayList<BigInteger> teamIds = teamCrud.getAssociatedTeamIdsForUser(userId);
 		
-		Long teamId = teamList.get(nbTable).getId();
+		Long teamId = null;
+		
+		for (int i = 0; i < teamIds.size(); i++) {
+			if (teamIds.get(i).intValue() == nbTable) {
+				teamId = teamIds.get(i).longValue();
+			}
+		}
 		
 		String role = UtilsFunctions.getConnectUserRole(userCrud, userRoleCrud, roleCrud);
 		
@@ -578,7 +598,6 @@ public class GraphController extends ViewBaseController<User>{
 
 		return "graphs" + PathFinder.PATH + "pieTeamdate";
 	}
-
 
 	/**
 	 * GET MONTH NAME

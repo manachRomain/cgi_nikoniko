@@ -90,27 +90,19 @@
 </div>
 </#if>
 <div class="container-fluid">
-    <div class="col-lg-2">
         <div class="row-fluid">
             <div class="col-lg-8">
-                <div class="alignleft">
-	                <#if role != "admin">
-		                <button onclick="location.href='showgraph'" class="myresults"> Resultat du jour </button>
-		                <button onclick="location.href='showgraphverticale'" class="resultsverticale"> Resultat verticale </button>
-		                <button onclick="location.href='showgraphteam/0'" class="resultsteam"> Resultat d'équipe </button>
-	                </#if>
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="alignleft">
+                <div>
                 <#if role != "admin">
-	                <button onclick="location.href='/graph/nikoniko/month'" class="resultsteam"> Calendrier </button>
-	                <button onclick="location.href='/graph/nikonikovert/${idVert}/month'" class="resultsteam"> Calendrier verticale </button>
+	                <button onclick="location.href='/graph/nikoniko/month'" class="myresults"> Votre calendrier </button>
+	                <button onclick="location.href='/graph/nikonikovert/${idVert}/month'" class="myresults"> Calendrier verticale </button>
+	                <#list teamnameid as teamName, idsTeam>
+	                	<button onclick="location.href='/graph/nikonikoteam/${idsTeam}/month'" class="myresults"> Calendrier team : ${teamName} </button>
+	                </#list>
                 </#if>
                 </div>
             </div>
         </div>
-    </div>
 </div>
 
 <!-- FOOTER -->
