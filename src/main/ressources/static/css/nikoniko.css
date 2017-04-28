@@ -148,7 +148,6 @@ hr {
 }
 
 .dayHeader {
-    background-color : yellow;
     text-align : center;
     font-weight : bold;
     font-size : 16px;
@@ -156,37 +155,44 @@ hr {
 }
 .month_year {
 	color : black;
-	font-weight : bold;
 }
 .date_buttons {
 	text-align : center;
-	font-size : 30px;
+	font-size : 20px;
 }
 .previous_button {
 	padding-right : 50px;
+	font-size : 20px;
 }
 .next_button {
 	padding-left : 50px;
+	font-size : 20px;
 }
 .emptyDay {
-	background-color : grey ;
+	opacity : 0.6;
+	background-color : #cc1e1e ;
 }
 .fillableDay {
 	margin : -10px;
 	height : 150px;
 	width : 90px;
-	background-color : white;
 }
 .daynikos{
 	align : center;
 	width : 100%;
 }
 .daynikos img{
-	width : 40%;
+	width : 20%;
 	cursor : pointer;
 }
 .nikoPastille {
 	width : 45%;
 	font-size : 20px;
 	font-weight : bold;
+}
+
+.commentniko{
+	font-family: 'Gloria Hallelujah', cursive;
+	margin-top: 10px;
+	color: #cc1e1e;
 }

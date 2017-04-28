@@ -1176,6 +1176,7 @@ public class GraphController extends ViewBaseController<User>{
 
 		ArrayList<Map<String,Object>> days = new ArrayList<Map<String,Object>>();
 		ArrayList<NikoNiko> nikos = new ArrayList<NikoNiko>();
+		ArrayList<String> commentList = new ArrayList<String>();
 
 		nikos.addAll(userCrud.findOne(idUser).getNikoNikos());
 
@@ -1273,23 +1274,23 @@ public class GraphController extends ViewBaseController<User>{
 			days.get(i-1).put(jourSemaine[dateLocale.withDayOfMonth(i).getDayOfWeek()-1], i);
 			
 			LocalDate dateBuffer = new LocalDate(dateLocale.getYear(), dateLocale.getMonthOfYear(),i);
-
-			//fonction a importer
-			//List<NikoNiko> nikostemp = getNikoPreciseDate((List<NikoNiko>)nikos,dateLocale.getYear(),dateLocale.getMonthOfYear(),i);
 			
 			List<NikoNiko> nikostemp = nikoCrud.getNikoNikoOfUserWithPreciseDate(idUser, dateBuffer);
-
+			
+			String comment = "";
 			int nikoMood = 0;
 
 			for (NikoNiko nikotemp : nikostemp) {
-				nikoMood = nikotemp.getMood();
+				nikoMood = nikotemp.getMood(); 
+				comment = nikotemp.getComment(); 
 			}
-
-			days.get(i-1).put("nikoOfDay", nikoMood);
+ 
+			days.get(i-1).put("nikoOfDay", nikoMood); 
+			commentList.add(comment);
 
 			if (dateLocale.withDayOfMonth(i).getDayOfWeek()==1) {//if Monday
 				numberOfWeekInMonth++;
-				nbWeeks.add(numberOfWeekInMonth);
+				nbWeeks.add(numberOfWeekInMonth); 
 				days.get(i-1).put("endOfWeek", numberOfWeekInMonth);
 			} else {
 				days.get(i-1).put("endOfWeek", numberOfWeekInMonth);
@@ -1344,6 +1345,7 @@ public class GraphController extends ViewBaseController<User>{
 		model.addAttribute("back", PathFinder.PATH + PathFinder.MENU_PATH);
 		
 		model.addAttribute("lastUrl", lastUrl);
+		model.addAttribute("comment", commentList);
 		
 		
 

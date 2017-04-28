@@ -93,11 +93,14 @@
 												<div class = "daynikos" onclick = "location.href='/graph/showgraph/${yearToUse?c}/${monthToUse}/${map[key]}'">
 														<center>
 															<#if map["nikoOfDay"]== 1>
-																<img src = "http://i.ebayimg.com/images/i/151172319961-0-1/s-l1000.jpg">
-															<#elseif map["nikoOfDay"]== 2>
-																<img src = "http://cdn.olshop.ag/a/store_files/11/images/product_images/info_images/171900_0_e3mwjfux8n.jpg">
+																<img src = "https://gusandcodotnet.files.wordpress.com/2013/10/glassy-smiley-failure.png">
+																<div class="commentniko"> "${comment[map[key]-1]}" </div>
+															<#elseif map["nikoOfDay"]== 2>														
+																<img src = "https://images.vexels.com/media/users/3/134541/isolated/preview/02f3c0cba01ca5fb7405293c55253afd-emoji-emoticon-by-vexels.png">
+																<div class="commentniko"> "${comment[map[key]-1]}" </div>
 															<#elseif map["nikoOfDay"]== 3>
-																<img src = "http://i.ebayimg.com/images/i/151172320059-0-1/s-l1000.jpg">
+																<img src = "https://images.vexels.com/media/users/3/134594/isolated/preview/cb4dd9ad3fa5ad833e9b38cb75baa18a-happy-emoji-emoticon-by-vexels.png">
+																<div class="commentniko"> "${comment[map[key]-1]}" </div>
 															<#else>
 															</#if>
 														</center>
@@ -113,12 +116,15 @@
 												<div class = "daynikos" onclick = "location.href='/graph/showgraph/${yearToUse?c}/${monthToUse}/${map[key]}'">
 												<div class = "daynikos" onclick = "location.href='nikoniko/day/${yearToUse?c}/${monthToUse}/${map[key]}'">
 														<center>
-															<#if map["nikoOfDay"]== 1>
-																<img src = "http://i.ebayimg.com/images/i/151172319961-0-1/s-l1000.jpg">
-															<#elseif map["nikoOfDay"]== 2>
-																<img src = "http://cdn.olshop.ag/a/store_files/11/images/product_images/info_images/171900_0_e3mwjfux8n.jpg">
-															<#elseif map["nikoOfDay"]== 3>
-																<img src = "http://i.ebayimg.com/images/i/151172320059-0-1/s-l1000.jpg">
+															<#if map["nikoOfDay"]== 1>															
+																<img src = "https://gusandcodotnet.files.wordpress.com/2013/10/glassy-smiley-failure.png">
+																<div class="commentniko"> "${comment[map[key]-1]}" </div>
+															<#elseif map["nikoOfDay"]== 2>															
+																<img src = "https://images.vexels.com/media/users/3/134541/isolated/preview/02f3c0cba01ca5fb7405293c55253afd-emoji-emoticon-by-vexels.png">
+																<div class="commentniko"> "${comment[map[key]-1]}" </div>
+															<#elseif map["nikoOfDay"]== 3>																
+																<img src = "https://images.vexels.com/media/users/3/134594/isolated/preview/cb4dd9ad3fa5ad833e9b38cb75baa18a-happy-emoji-emoticon-by-vexels.png">
+																<div class="commentniko"> "${comment[map[key]-1]}" </div>
 															<#else>
 															</#if>
 														</center>

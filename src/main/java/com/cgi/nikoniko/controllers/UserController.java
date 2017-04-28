@@ -291,10 +291,10 @@ public class UserController extends ViewBaseController<User> {
 				if (mood == 0) {
 					nikoUpdate.setComment("");
 				}
-				
 				else {
 					nikoUpdate.setComment(comment);
 				}
+				
 				nikoUpdate.setMood(mood);
 
 				nikoCrud.save(nikoUpdate);
@@ -311,6 +311,10 @@ public class UserController extends ViewBaseController<User> {
 			}
 
 			else {
+				
+				if (mood == 0) {
+					comment = "";
+				}
 
 				NikoNiko niko = new NikoNiko(user,mood,date,comment);
 				nikoCrud.save(niko);

@@ -20,7 +20,7 @@
 	<!-- Title -->
 	<title>Satisfaction</title>
 </head>
-<body>
+<
 <!-- HEAD -->
 <body>
 	<div class="container-fluid">
@@ -46,7 +46,7 @@
 
 <hr>
 
-<!-- CONSTRUCTION -->
+<!-- MAKE YOUR CHOICE -->
 <form action = "" method = "POST">
 <div class="container-fluid">
 	<div class="row-fluid">

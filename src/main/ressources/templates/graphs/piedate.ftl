@@ -87,7 +87,7 @@
 	<div class="welcome"> ${title} </div>
 		<#if motiv != 0 && check == true>
 			<#if motiv == 1>
-				<img class="piechart" src="http://www.espritjeune.com/wp-content/uploads/2014/10/pascontent.jpg" alt="canard"/>
+				<img class="piechart" src="https://gusandcodotnet.files.wordpress.com/2013/10/glassy-smiley-failure.png"/>
 				<#if textAreaOption == "">
 					<div class="welcome"> Pas de commentaire saisit ! </div>
 				<#else>
@@ -95,7 +95,7 @@
 	    			<div class="comment">"${textAreaOption}" </div>
 	    		</#if>
 			<#elseif motiv == 2>
-				<img class="piechart" src="http://robertlebon.e-monsite.com/medias/images/bonne-humeur-2.jpg" alt="canard"/>
+				<img class="piechart" src="https://images.vexels.com/media/users/3/134541/isolated/preview/02f3c0cba01ca5fb7405293c55253afd-emoji-emoticon-by-vexels.png" alt="canard"/>
 				<#if textAreaOption == "">
 					<div class="welcome"> Pas de commentaire saisit !</div>
 				<#else>
@@ -103,7 +103,7 @@
 	    			<div class="comment">"${textAreaOption}" </div>
 	    		</#if>
 			<#elseif motiv == 3>
-				<img class="piechart" src="http://krichprollsch.github.io/git-xp/img/cool.jpg" alt="canard"/>
+				<img class="piechart" src="https://images.vexels.com/media/users/3/134594/isolated/preview/cb4dd9ad3fa5ad833e9b38cb75baa18a-happy-emoji-emoticon-by-vexels.png" alt="canard"/>
 				<#if textAreaOption == "">
 					<div class="comment"> Pas de commentaire saisit !</div>
 				<#else>

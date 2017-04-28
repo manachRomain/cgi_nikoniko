@@ -25,33 +25,22 @@
 </head>
 <body>
 	<div class="container-fluid">
-		<div class="row-fluid">
-			<div class="col-lg-2">
-				<img class="logo" src="https://upload.wikimedia.org/wikipedia/fr/5/51/LOGO-CGI-1993-1998.svg">
-			</div>
-			<div class="col-lg-8">
-				<div class="title">Niko-Niko</div>
-			</div>
-			<div class="col-lg-2">
-				<div class="row-fluid">
-					<div class="col-lg-12">
-						<div class="align">
-						<button onclick="location.href='/logout' " class="logout"> Déconnexion </button>
-						<#if roles == "chefProjet" >
-							<button onclick="location.href=''" class="password"> Préférences </button>
-						<#else>
-						</#if>
-						<#if mood != 0 && status == true>
-							<button onclick="location.href='${add_nikoniko}'" class="vote"> Modifier vote </button>
-						<#else>
-						</#if>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
+	    <div class="row-fluid">
+	        <div class="col-lg-2  col-xs-4">
+	            <img class="logo" src="https://upload.wikimedia.org/wikipedia/fr/5/51/LOGO-CGI-1993-1998.svg">
+	        </div>
+	        <div class="col-lg-8 col-xs-4">
+	            <div class="title">Niko-Niko</div>
+	        </div>
+	        <div class="col-lg-2 col-xs-4">
+	            <div class="row-fluid">
+	                   <div align="right" class="row-fluid">
+		                    <button onclick="location.href='/logout' " class="logout"> Deconnexion </button>
+		               </div>
+	            </div>
+	        </div>
+	    </div>
 	</div>
-
 <hr>
 
 <div class="welcome"> Bienvenue : ${auth} </div>

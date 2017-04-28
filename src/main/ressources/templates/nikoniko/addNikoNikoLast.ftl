@@ -23,26 +23,27 @@
 <body>
 
 <!-- HEAD -->
-<div class="container-fluid">
-	<div class="row-fluid">
-		<div class="col-lg-2">
-			<img class="logo" src="https://upload.wikimedia.org/wikipedia/fr/5/51/LOGO-CGI-1993-1998.svg">
-		</div>
-		<div class="col-lg-8">
-			<div class="title">Niko-Niko</div>
-		</div>
-		<div class="col-lg-2">
-			<div class="row-fluid">
-				<div class="col-lg-12">
-					<div class="align">
-					<button onclick="location.href='/logout' " class="logout"> Déconnexion </button>
-						<button onclick="location.href='/menu'" class="logout"> Retour </button>
-					</div>
-				</div>
-			</div>
-		</div>
+<body>
+	<div class="container-fluid">
+	    <div class="row-fluid">
+	        <div class="col-lg-2  col-xs-4">
+	            <img class="logo" src="https://upload.wikimedia.org/wikipedia/fr/5/51/LOGO-CGI-1993-1998.svg">
+	        </div>
+	        <div class="col-lg-8 col-xs-4">
+	            <div class="title">Niko-Niko</div>
+	        </div>
+	        <div class="col-lg-2 col-xs-4">
+	            <div class="row-fluid">
+	                   <div align="right" class="row-fluid">
+		                    <button onclick="location.href='/logout' " class="logout"> Deconnexion </button>
+		               </div>
+		               <div align="right" class="row-fluid">
+		                    <button onclick="location.href='/menu'" class="home"> Retour </button>
+		               </div>
+	            </div>
+	        </div>
+	    </div>
 	</div>
-</div>
 
 <hr>
 
@@ -51,28 +52,11 @@
 <div class="container-fluid">
 	<div class="row-fluid">
 		<div class="col-lg-12">
-			<div class="col-md-4 col-sl-4 col-xs-12"">
-        		<center>
-					<div id="crouge"></div>
-					<input type="radio" name="mood" value="1" >
-					<div class="bad_day"> Vous avez passé une très très mauvaise journée...</div>
+			<center>
+					<img onclick="nikoniko()" src="https://images.vexels.com/media/users/3/134594/isolated/preview/cb4dd9ad3fa5ad833e9b38cb75baa18a-happy-emoji-emoticon-by-vexels.png" style ="width : 20%" id="image">
+					<div style="background-color : green" id="niko" onclick="nikoniko()"> Bonne journee  </div>
 			</center>
-				</center>
-			</div>
-			<div class="col-md-4 col-sl-4 col-xs-12">
-				<center>
-					<div id="corange"></div>
-					<input type="radio" name="mood" value="2" >
-					<div class="correct_day"> Vous avez passé une journée assez moyenne. </div>
-				</center>
-			</div>
-			<div class="col-md-4 col-sl-4 col-xs-12">
-				<center>
-					<div id="cvert"></div>
-					<input type="radio" name="mood" value="3">
-					<div class="good_day"> Vous avez passé une bonne journée. </div>
-				</center>
-			</div>
+			<input id = "mood" type="hidden" name = "mood" value="0">
 		</div>
 	</div>
 </div>
@@ -101,5 +85,36 @@
 		</div>
 	</div>
 </div>
+
+<script type="text/javascript">
+var count = 0;
+
+function nikoniko() {
+
+	if (count === 0){
+    	document.getElementById("niko").style.backgroundColor = 'red';
+    	document.getElementById("mood").value="3";
+    	document.getElementById("image").src = "https://gusandcodotnet.files.wordpress.com/2013/10/glassy-smiley-failure.png";
+    	document.getElementById("niko").innerHTML = 'Mauvaise journee';
+    	count = count + 1;
+    }
+
+	else if (count === 1){
+    	document.getElementById("niko").style.backgroundColor = 'orange';
+    	document.getElementById("mood").value="2";
+    	document.getElementById("image").src = "https://images.vexels.com/media/users/3/134541/isolated/preview/02f3c0cba01ca5fb7405293c55253afd-emoji-emoticon-by-vexels.png";
+    	document.getElementById("niko").innerHTML = 'Ni bonne, ni mauvaise journee';
+    	count = count + 1;
+    }
+    
+    else if (count === 2){
+    	document.getElementById("niko").innerHTML = 'Bonne journee';
+		document.getElementById("niko").style.backgroundColor = 'green';
+		document.getElementById("mood").value="1";
+		document.getElementById("image").src = "https://images.vexels.com/media/users/3/134594/isolated/preview/cb4dd9ad3fa5ad833e9b38cb75baa18a-happy-emoji-emoticon-by-vexels.png";
+    	count = 0;    
+    }    	
+};
+</script>
 </body>
 </html>
