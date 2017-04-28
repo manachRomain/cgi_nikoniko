@@ -37,6 +37,7 @@
 	        </div>
 	    </div>
 	</div>
+	
 	<h1>${page}</h1>
 	<table class="table table-bordered table-hover">
 		<#list sortedFields as field>

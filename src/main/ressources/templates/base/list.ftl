@@ -15,46 +15,65 @@
 <body>
 	<div class="container-fluid">
 	    <div class="row-fluid">
-	        <div class="col-lg-2">
+	        <div class="col-lg-2  col-xs-4">
 	            <img class="logo" src="https://upload.wikimedia.org/wikipedia/fr/5/51/LOGO-CGI-1993-1998.svg">
 	        </div>
-	        <div class="col-lg-8">
+	        <div class="col-lg-8 col-xs-4">
 	            <div class="title">Niko-Niko</div>
 	        </div>
-	        <div class="col-lg-2">
+	        <div class="col-lg-2 col-xs-4">
 	            <div class="row-fluid">
-	                <div class="col-lg-12">
-	                    <div class="align">
-	                        <button onclick="location.href='/logout' " class="logout"> Déconnexion </button>
-	                        <button onclick="location.href='/menu/'" class="return"> Retour </button>
-	                    </div>
-	                </div>
+	                   <div align="right" class="row-fluid">
+		                    <button onclick="location.href='/logout' " class="logout"> Deconnexion </button>
+		               </div>
+		               <div align="right" class="row-fluid">
+		                    <button onclick="location.href='../menu' " class="return"> Menu </button>
+		               </div>
 	            </div>
 	        </div>
 	    </div>
 	</div>
+	
+	<hr>
 
-	<h1>Liste des ${page}</h1>
+	<div class="container-fluid">
+		<div class = "row-fluid">
+			<div class="col-lg-12">
 	<form action = "" method = "POST">
 		<#include "../includable/security/securityToken.ftl">
 		<#if model = "user">
 			<input type="text" class="search" onkeyup="myFunction()" name="name" placeholder="Search for registration" title="Type in a name">
+			
 		<#elseif model = "team">
 			<input type="text" class="search" onkeyup="myFunction()" name="name" placeholder="Search for team names" title="Type in a name">
+			
 		<#elseif model = "verticale" >
 			<input type="text" class="search" onkeyup="myFunction()" name="name" placeholder="Search for verticales names" title="Type in a name">
+			
 		<#elseif model = "nikoniko">
 			<input type="text" class="search" onkeyup="myFunction()" name="name" placeholder="Search for registration_cgi" title="Type in a name">
+			
 		<#else>
 		</#if>
 		<#if model == "role">
 		<#else>
 			<input type="submit" value="Rechercher">
+			<hr>
 		</#if>
+		</div>
+		</div>
+		</div>
 	</form>
+	
+	
+	
+	<div class="container-fluid">
+		<div class = "row-fluid">
+			<div class = "col-lg-12">
+	<h2 style = "text-decoration : underline; margin-bottom : 20px">Liste des ${page}s</h2>
 	<#if model == "nikoniko" || model == "role">
 	<#else>
-		 <br><a class ="btn btn-default" href="${go_create}">Créer un nouveau</a>
+		 <button style ="margin-bottom : 10px" href="${go_create}">Créer un nouveau </button>
 	</#if>
 	<table class="table table-bordered table-hover">
 		<tr>
@@ -102,18 +121,18 @@
 				<#if model == "role">
 					<td>
 						<#if item["id"]??>
-							<a class = "btn btn-default" href="${item["id"]}/showUser">Afficher les utilisateurs</a>
+							<a href="${item["id"]}/showUser">Afficher les utilisateurs</a>
 						<#else>
-							<a class = "btn btn-default" href="${item["idLeft"]}/${item["idRight"]}/${go_show}">Select</a>
+							<a href="${item["idLeft"]}/${item["idRight"]}/${go_show}">Select</a>
 						</#if>
 					</td>
 				<#else>
 					<td>
 						<#if item["id"]??>
-							<a class = "btn btn-default" href="${item["id"]}/${go_show}">Détails</a>
+							<a href="${item["id"]}/${go_show}">Détails</a>
 
 						<#else>
-							<a class = "btn btn-default" href="${item["idLeft"]}/${item["idRight"]}/${go_show}">Détails</a>
+							<a href="${item["idLeft"]}/${item["idRight"]}/${go_show}">Détails</a>
 						</#if>
 					</td>
 					<td>
@@ -138,5 +157,17 @@
 				</tr>
 			</#list>
 		</table>
+		</div>
+		</div>
+		</div>
+		
+<!-- FOOTER -->
+<div class="container-fluid">
+	<div class="row-fluid">
+		<div class="col-lg-12">
+			<div class="copyright">&copy; Niko-Niko CGI 2017</div>
+		</div>
+	</div>
+</div>
 </body>
 </html>

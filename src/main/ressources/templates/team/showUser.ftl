@@ -34,6 +34,7 @@
 	        </div>
 	    </div>
 	</div>
+	
 	<h1>Utilisateurs dans l'équipe : ${page}  </h1>
 		<table class="table table-bordered table-hover">
 			<tr>

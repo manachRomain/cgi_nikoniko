@@ -50,6 +50,13 @@ hr {
 	width: 100px;
 }
 
+.return{
+	height: 30px;
+	width: 100px;
+	font-size: 10px;
+	margin-top: 5px;
+}
+
 .vote{
 	margin-top: 5px;
 	height: 30px;
@@ -96,7 +103,7 @@ hr {
 .piechart{
     margin: 0 auto;
     display: block;
-    width: 30%;
+    width: 20%;
 }
 
 /* BUTTON GRAPHS */

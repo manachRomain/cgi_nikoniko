@@ -43,7 +43,7 @@
 	</div>
 <hr>
 
-<div class="welcome"> Bienvenue : ${auth} </div>
+<h2 style = "text-align : center"> Bienvenue : ${auth} </h2>
 
 <hr>
 

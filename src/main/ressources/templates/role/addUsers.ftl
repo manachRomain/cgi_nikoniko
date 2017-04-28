@@ -14,32 +14,42 @@
 
 <body>
 <div class="container-fluid">
-    <div class="row-fluid">
-        <div class="col-lg-2">
-            <img class="logo" src="https://upload.wikimedia.org/wikipedia/fr/5/51/LOGO-CGI-1993-1998.svg">
-        </div>
-        <div class="col-lg-8">
-            <div class="title">Niko-Niko</div>
-        </div>
-        <div class="col-lg-2">
-            <div class="row-fluid">
-                <div class="col-lg-12">
-                    <div class="align">
-                        <button onclick="location.href='/logout' " class="logout"> Déconnexion </button>
-                        <button onclick="location.href='/menu'" class="home"> Menu </button>
-                        <button onclick="location.href='${back}'" class="return"> Retour </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-	<h1> Utilisateurs à ajouter au role : ${page}  </h1>
+	    <div class="row-fluid">
+	        <div class="col-lg-2  col-xs-4">
+	            <img class="logo" src="https://upload.wikimedia.org/wikipedia/fr/5/51/LOGO-CGI-1993-1998.svg">
+	        </div>
+	        <div class="col-lg-8 col-xs-4">
+	            <div class="title">Niko-Niko</div>
+	        </div>
+	        <div class="col-lg-2 col-xs-4">
+	            <div class="row-fluid">
+	                   <div align="right" class="row-fluid">
+		                    <button onclick="location.href='/logout' " class="logout"> Deconnexion </button>
+		               </div>
+		               <div align="right" class="row-fluid">
+		                    <button onclick="location.href='/menu' " class="home"> Menu </button>
+		               </div>
+		               <div align="right" class="row-fluid">
+		                    <button onclick="location.href='./showUser' " class="return"> Retour </button>
+		               </div>
+	            </div>
+	        </div>
+	    </div>
+	</div>
+	
+	<hr>
+	
+	<div class="container-fluid">
+		<div class="row-fluid">
+			<div class="col-lg-12">
 		<form action = "" method = "POST">
 			<#include "../includable/security/securityToken.ftl">
 			<input type="text" class="search" onkeyup="myFunction()" name="name" placeholder="Search for registration" title="Type in a name">
 			<input type="submit" value="Rechercher">
 		</form>
+		
+<hr>
+		<h2 style = "text-decoration : underline; margin-bottom : 20px"> Utilisateurs à ajouter au role : ${page}  </h1>
 		<table class="table table-bordered table-hover">
 			<tr>
 				<#list items as item>
@@ -78,5 +88,18 @@
 				</tr>
 			</#list>
 		</table>
+		</div>
+		</div>
+		</div>
+		
+		<!-- FOOTER -->
+<div class="container-fluid">
+	<div class="row-fluid">
+		<div class="col-lg-12">
+			<div class="copyright">&copy; Niko-Niko CGI 2017</div>
+		</div>
+	</div>
+</div>
+
 </body>
 </html>

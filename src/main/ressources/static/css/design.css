@@ -40,14 +40,14 @@ hr {
 	height: 30px;
 	width: 100px;
 	font-size: 10px;
-	margin-top: 10px;
+	margin-top: 5px;
 }
 
 .home{
 	height: 30px;
 	width: 100px;
 	font-size: 10px;
-	margin-top: 10px;
+	margin-top: 5px;
 }
 
 .align{
@@ -94,13 +94,11 @@ hr {
 /* BUTTON SEARCH */
 
 .search{
-  background-position: 10px 12px;
-  background-repeat: no-repeat;
-  /*width: 100%;*/
-  font-size: 16px;
-  padding: 12px 20px 12px 40px;
-  border: 1px solid #dddddd;
-  margin-bottom: 12px;
+  
+}
+
+.table-bordered td, .table-bordered th{
+    border-color: black !important;
 }
 
 .confirmation_message {
