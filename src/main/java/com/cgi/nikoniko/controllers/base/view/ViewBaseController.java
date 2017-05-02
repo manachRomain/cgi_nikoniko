@@ -2,6 +2,7 @@ package com.cgi.nikoniko.controllers.base.view;
 
 import java.io.IOException;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.http.HttpStatus;
@@ -104,6 +105,8 @@ public abstract class ViewBaseController<T extends DatabaseItem> extends BaseCon
 		model.addAttribute("go_index", PathFinder.LIST_ACTION);
 		model.addAttribute("create_item", PathFinder.CREATE_ACTION);
 		
+		model.addAttribute("back", PathFinder.USER + PathFinder.PATH);
+		
 		return createView;
 	}
 
@@ -165,13 +168,17 @@ public abstract class ViewBaseController<T extends DatabaseItem> extends BaseCon
 	 */
 	@Secured({"ROLE_ADMIN","ROLE_GESTIONNAIRE","ROLE_USER"})
 	@RequestMapping(path = PathFinder.ROUTE_UPDATE, method = RequestMethod.GET)
-	public String updateItemGet(Model model,@PathVariable Long id) {
+	public String updateItemGet(Model model,@PathVariable Long id, HttpServletRequest request) {
 
-		model.addAttribute("page", StringUtil.capitalize(this.baseName)  + " à " + PathFinder.UPDATE_ACTION);
+		String lastUrl = request.getHeader("referer");
+		
+		model.addAttribute("page", StringUtil.capitalize(this.baseName)  + " a " + PathFinder.UPDATE_ACTION);
 		model.addAttribute("sortedFields",DumpFields.createContentsEmpty(super.getClazz()).fields);
 		model.addAttribute("items",DumpFields.fielder(super.getItem(id)));
 		model.addAttribute("go_index",PathFinder. LIST_ACTION);
 		model.addAttribute("update_item", PathFinder.UPDATE_ACTION);
+		model.addAttribute("lastUrl", lastUrl);
+		
 		return updateView;
 	}
 

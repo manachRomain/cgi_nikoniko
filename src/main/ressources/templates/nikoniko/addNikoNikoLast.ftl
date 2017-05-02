@@ -54,7 +54,7 @@
 		<div class="col-lg-12">
 			<center>
 					<img onclick="nikoniko()" src="https://images.vexels.com/media/users/3/134594/isolated/preview/cb4dd9ad3fa5ad833e9b38cb75baa18a-happy-emoji-emoticon-by-vexels.png" style ="width : 20%" id="image">
-					<div style="background-color : green" id="niko" onclick="nikoniko()"> Bonne journee  </div>
+					<div style="background-color : green; width : 20%; border-radius : 4px" id="niko" onclick="nikoniko()"> Bonne journee  </div>
 			</center>
 			<input id = "mood" type="hidden" name = "mood" value="0">
 		</div>

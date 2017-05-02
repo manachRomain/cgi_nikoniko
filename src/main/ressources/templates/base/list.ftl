@@ -73,7 +73,7 @@
 	<h2 style = "text-decoration : underline; margin-bottom : 20px">Liste des ${page}s</h2>
 	<#if model == "nikoniko" || model == "role">
 	<#else>
-		 <button style ="margin-bottom : 10px" href="${go_create}">Créer un nouveau </button>
+		 <a style ="margin-bottom : 10px" href="${go_create}"> Creer un nouveau </a>
 	</#if>
 	<table class="table table-bordered table-hover">
 		<tr>
@@ -135,24 +135,6 @@
 							<a href="${item["idLeft"]}/${item["idRight"]}/${go_show}">Détails</a>
 						</#if>
 					</td>
-					<td>
-							<#if item["id"]?? && item["id"]!=1>
-								<form action = "${item["id"]}/${go_delete}" method = "POST">
-								<#include "../includable/security/securityToken.ftl">
-									<input type="hidden" name = "id" value = "${item["id"]}">
-									<input type="submit" value="Supprimer">
-								</form>
-
-							<#elseif item["id"]!=1>
-								<form action = "${item["idLeft"]}/${item["idRight"]}/${go_delete}" method = "POST">
-								<#include "../includable/security/securityToken.ftl">
-									<input type="hidden" name = "idl" value = "${item["idLeft"]}">
-									<input type="hidden" name = "idr" value = "${item["idRight"]}">
-									<input type="submit" value="Supprimer">
-								</form>
-
-							</#if>
-						</td>
 					</#if>
 				</tr>
 			</#list>

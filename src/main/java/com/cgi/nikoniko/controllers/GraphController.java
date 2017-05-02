@@ -34,7 +34,6 @@ import com.cgi.nikoniko.models.tables.NikoNiko;
 import com.cgi.nikoniko.models.tables.Team;
 import com.cgi.nikoniko.models.tables.User;
 import com.cgi.nikoniko.utils.UtilsFunctions;
-import com.jayway.jsonpath.internal.function.numeric.Max;
 
 @Controller
 @RequestMapping(GraphController.BASE_URL)
@@ -423,7 +422,9 @@ public class GraphController extends ViewBaseController<User>{
 	 */
 	@RequestMapping(path = PathFinder.SHOW_GRAPH_VERTICALE + PathFinder.PATH + "{year}" + PathFinder.PATH + "{month}" + PathFinder.PATH + "{day}", method = RequestMethod.GET)
 	public String getNikoFromVerticaleWithDate(Model model, @PathVariable int year,
-			@PathVariable int month, @PathVariable int day){
+			@PathVariable int month, @PathVariable int day, HttpServletRequest request){
+		
+		String lastUrl = request.getHeader("referer");
 		
 		LocalDate currentDate = new LocalDate(year,month,day);
 		User user = UtilsFunctions.getUserInformations(userCrud);
@@ -479,6 +480,8 @@ public class GraphController extends ViewBaseController<User>{
 		model.addAttribute("month", month);
 		model.addAttribute("day", day);
 		model.addAttribute("back", PathFinder.PATH + PathFinder.MENU_PATH);
+		
+		model.addAttribute("lastUrl", lastUrl);
 		
 		return "graphs" + PathFinder.PATH + "piedate";
 	}
@@ -546,7 +549,9 @@ public class GraphController extends ViewBaseController<User>{
 	 */
 	@RequestMapping(path = PathFinder.SHOW_GRAPH_TEAM + PathFinder.PATH + "{nbTable}" + PathFinder.PATH + "{year}" + PathFinder.PATH + "{month}" + PathFinder.PATH + "{day}", method = RequestMethod.GET)
 	public String getNikoFromTeamWithDate(Model model, @PathVariable int nbTable, @PathVariable int year,
-			@PathVariable int month, @PathVariable int day){
+			@PathVariable int month, @PathVariable int day, HttpServletRequest request ){
+		 
+		String lastUrl = request.getHeader("referer");
 		
 		Long userId = UtilsFunctions.getUserInformations(userCrud).getId();
 		
@@ -607,6 +612,8 @@ public class GraphController extends ViewBaseController<User>{
 		model.addAttribute("day", day);
 		model.addAttribute("back", PathFinder.PATH + PathFinder.MENU_PATH);
 
+		model.addAttribute("lastUrl", lastUrl);
+		
 		return "graphs" + PathFinder.PATH + "pieTeamdate";
 	}
 

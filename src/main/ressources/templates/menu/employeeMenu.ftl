@@ -37,6 +37,12 @@
 	                   <div align="right" class="row-fluid">
 		                    <button onclick="location.href='/logout' " class="logout"> Deconnexion </button>
 		               </div>
+		               <#if mood !=0 && status=true>
+		                	<div align="right" class="row-fluid">
+		                    	<button onclick="location.href='${add_nikoniko}' " class="home"> Modifier vote </button>
+		               		</div>
+		               	<else>
+		               	</#if>
 	            </div>
 	        </div>
 	    </div>

@@ -54,17 +54,17 @@
 			<center>
 			<#if mood == 0>
 				<img onclick="nikoniko()" src="https://s0.wp.com/wp-content/mu-plugins/wpcom-smileys/twemoji/2/svg/1f914.svg" style ="width : 20%" id="image">
-				<div style="background-color : white" id="niko" onclick="nikoniko()"> Ne pas voter </div>
+				<div style="background-color : white; width : 20%; border-radius : 4px" id="niko" onclick="nikoniko()"> Ne pas voter </div>
 			<#elseif mood !=0>
 				<#if mood == 3>
 					<img onclick="nikoniko()" src="https://gusandcodotnet.files.wordpress.com/2013/10/glassy-smiley-failure.png" style ="width : 20%" id="image">
-					<div style="background-color : red" id="niko" onclick="nikoniko()"> Mauvaise journee </div>
+					<div style="background-color : red; width : 20%; border-radius : 4px" id="niko" onclick="nikoniko()"> Mauvaise journee </div>
 				<#elseif mood == 2>
 					<img onclick="nikoniko()" src="https://images.vexels.com/media/users/3/134541/isolated/preview/02f3c0cba01ca5fb7405293c55253afd-emoji-emoticon-by-vexels.png" style ="width : 20%" id="image">
-					<div style="background-color : orange" id="niko" onclick="nikoniko()"> Ni bonne, ni mauvaise journee </div>
+					<div style="background-color : orange; width : 20%; border-radius : 4px" id="niko" onclick="nikoniko()"> Ni bonne, ni mauvaise journee </div>
 				<#else>
 					<img onclick="nikoniko()" src="https://images.vexels.com/media/users/3/134594/isolated/preview/cb4dd9ad3fa5ad833e9b38cb75baa18a-happy-emoji-emoticon-by-vexels.png" style ="width : 20%" id="image">
-					<div style="background-color : red" id="niko" onclick="nikoniko()"> Bonne journee  </div>
+					<div style="background-color : green; width : 20%; border-radius : 4px " id="niko" onclick="nikoniko()"> Bonne journee  </div>
 				</#if>
 			</#if>
 			</center>

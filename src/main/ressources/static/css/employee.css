@@ -44,6 +44,13 @@ hr {
 	width: 100px;
 }
 
+.home{
+	height: 30px;
+	width: 100px;
+	font-size: 10px;
+	margin-top: 5px;
+}
+
 .vote{
 	margin-top: 30px;
 	height: 30px;

@@ -16,38 +16,57 @@
 </head>
 
 <body>
+	<body>
 	<div class="container-fluid">
 	    <div class="row-fluid">
-	        <div class="col-lg-2">
+	        <div class="col-lg-2  col-xs-4">
 	            <img class="logo" src="https://upload.wikimedia.org/wikipedia/fr/5/51/LOGO-CGI-1993-1998.svg">
 	        </div>
-	        <div class="col-lg-8">
+	        <div class="col-lg-8 col-xs-4">
 	            <div class="title">Niko-Niko</div>
 	        </div>
-	        <div class="col-lg-2">
+	        <div class="col-lg-2 col-xs-4">
 	            <div class="row-fluid">
-	                <div class="col-lg-12">
-	                    <div class="align">
-	                    <button onclick="location.href='/logout' " class="logout"> Déconnexion </button>
-	                    <button onclick="location.href='${back}'" class="vote"> Retour </button>
-	                    </div>
-	                </div>
+	                   <div align="right" class="row-fluid">
+		                    <button onclick="location.href='/logout' " class="logout"> Deconnexion </button>
+		               </div>
+		               <div align="right" class="row-fluid">
+		                    <button onclick="location.href='/menu'" class="home"> Menu </button>
+		               </div>
 	            </div>
 	        </div>
 	    </div>
 	</div>
-	<br>
+	
+	<hr>
+	
+	<div class="container-fluid">
+	<div class="row-fluid">
 	<div class = "date_buttons">
+		<div class="col-lg-4 col-xs-4">
 		<span class = "previous_button">
 			<a href="?month=${monthToUse}&year=${yearToUse?c}&action=previous">Mois précédent</a>
 		</span>
+		</div>
+		<div class="col-lg-4 col-xs-4">
 		<span class = "month_year">
-			Résultats pour ${monthName} ${yearToUse}
+			Resultat de l'equipe : ${teamName} pour ${monthName} ${yearToUse}
 		</span>
+		</div>
+		<div class="col-lg-4 col-xs-4">
 		<span class = "next_button">
 			<a href="?month=${monthToUse}&year=${yearToUse?c}&action=next">Mois suivant</a>
 		</span>
+		</div>
 	</div>
+	</div>
+	</div>
+	
+	<hr>
+	
+	<div class = "container-fluid">
+		<div class="row-fluid">
+			<div class ="col-lg-12">
 	<table class="table table-bordered table-hover">
 		<tr>
 			<#list jourSemaine as jour>
@@ -74,14 +93,14 @@
 														${map[key]}
 												</div>
 												<div class = "daynikos" onclick = "location.href='/graph/showgraphteam/${idTeam}/${yearToUse?c}/${monthToUse}/${map[key]}'">
-												        <div class = "nikoPastille">
-														<img src = "http://i.ebayimg.com/images/i/151172320059-0-1/s-l1000.jpg"> :  ${map["nikoGood"]}
+												       <div class = "nikoPastille">
+														<img src = "https://images.vexels.com/media/users/3/134594/isolated/preview/cb4dd9ad3fa5ad833e9b38cb75baa18a-happy-emoji-emoticon-by-vexels.png"> :  ${map["nikoGood"]}
 														</div>
 														<div class = "nikoPastille">
-														<img src = "http://cdn.olshop.ag/a/store_files/11/images/product_images/info_images/171900_0_e3mwjfux8n.jpg"> :  ${map["nikoNeutral"]}
+														<img src = "https://images.vexels.com/media/users/3/134541/isolated/preview/02f3c0cba01ca5fb7405293c55253afd-emoji-emoticon-by-vexels.png"> :  ${map["nikoNeutral"]}
 														</div>
 														<div class = "nikoPastille">
-														<img src = "http://i.ebayimg.com/images/i/151172319961-0-1/s-l1000.jpg"> :  ${map["nikoBad"]}
+														<img src = "https://gusandcodotnet.files.wordpress.com/2013/10/glassy-smiley-failure.png"> :  ${map["nikoBad"]}
 														</div>
 												</div>
 											</td>
@@ -94,13 +113,13 @@
 												</div>
 												<div class = "daynikos" onclick = "location.href='/graph/showgraphteam/${idTeam}/${yearToUse?c}/${monthToUse}/${map[key]}'">
 														<div class = "nikoPastille">
-														<img src = "http://i.ebayimg.com/images/i/151172320059-0-1/s-l1000.jpg"> :  ${map["nikoGood"]}
+														<img src = "https://images.vexels.com/media/users/3/134594/isolated/preview/cb4dd9ad3fa5ad833e9b38cb75baa18a-happy-emoji-emoticon-by-vexels.png"> :  ${map["nikoGood"]}
 														</div>
 														<div class = "nikoPastille">
-														<img src = "http://cdn.olshop.ag/a/store_files/11/images/product_images/info_images/171900_0_e3mwjfux8n.jpg"> :  ${map["nikoNeutral"]}
+														<img src = "https://images.vexels.com/media/users/3/134541/isolated/preview/02f3c0cba01ca5fb7405293c55253afd-emoji-emoticon-by-vexels.png"> :  ${map["nikoNeutral"]}
 														</div>
 														<div class = "nikoPastille">
-														<img src = "http://i.ebayimg.com/images/i/151172319961-0-1/s-l1000.jpg"> :  ${map["nikoBad"]}
+														<img src = "https://gusandcodotnet.files.wordpress.com/2013/10/glassy-smiley-failure.png"> :  ${map["nikoBad"]}
 														</div>
 												</div>
 											</td>
@@ -117,11 +136,19 @@
 				</#if>
 			</tr>
 		</#list>
-
-
 	</table>
+			</div>
+		</div>
+	</div>
 
-	<a href="/menu/">Back</a>
+<!-- FOOTER -->
+	<div class="container-fluid">
+		<div class="row-fluid">
+			<div class="col-lg-12">
+				<div class="copyright">&copy; Niko-Niko CGI 2017</div>
+			</div>
+		</div>
+	</div>
 
 </body>
 </html>

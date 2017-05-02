@@ -15,28 +15,33 @@
 <body>
 	<div class="container-fluid">
 	    <div class="row-fluid">
-	        <div class="col-lg-2">
+	        <div class="col-lg-2  col-xs-4">
 	            <img class="logo" src="https://upload.wikimedia.org/wikipedia/fr/5/51/LOGO-CGI-1993-1998.svg">
 	        </div>
-	        <div class="col-lg-8">
+	        <div class="col-lg-8 col-xs-4">
 	            <div class="title">Niko-Niko</div>
 	        </div>
-	        <div class="col-lg-2">
+	        <div class="col-lg-2 col-xs-4">
 	            <div class="row-fluid">
-	                <div class="col-lg-12">
-	                    <div class="align">
-	                        <button onclick="location.href='/logout' " class="logout"> Déconnexion </button>
-	                        <#if items["id"]??>
-	                            <button onclick="location.href='../'" class="return"> Retour </button>
-	                        <#else>
-	                            <button onclick="location.href='../..'" class="return"> Retour </button>
-	                        </#if>
-	                    </div>
-	                </div>
+	                   <div align="right" class="row-fluid">
+		                    <button onclick="location.href='/logout' " class="logout"> Deconnexion </button>                 
+		               </div>
+		               <div align="right" class="row-fluid">
+		               		<button onclick="location.href='/menu' " class="home"> Menu </button>
+		               </div>
+		               <div align="right" class="row-fluid">
+		               		<button onclick="location.href='${lastUrl}' " class="return"> Retour </button>
+		               </div>
 	            </div>
 	        </div>
 	    </div>
 	</div>
+	
+	<hr>
+	
+	<div class="container-fluid">
+		<div class="row-fluid">
+			<div class="col-lg-12">
 	<h1>${page}</h1>
 	<form action = "" method = "POST">
 	<#include "../includable/security/securityToken.ftl">
@@ -70,7 +75,10 @@
 			</#if>
 		</#list>
 	</table>
-		<input class="logout" type="submit" value="Modifier">
+		<input type="submit" value="Modifier">
 	</form>
+			</div>
+		</div>
+	</div>
 </body>
 </html>
