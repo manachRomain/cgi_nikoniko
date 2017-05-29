@@ -113,7 +113,7 @@
 									<td>${item[key]}</td>
 								</#if>
 								<#else>
-								</#if>
+					 			</#if>
 							</#if>
 						</#if>
 					</#list>
